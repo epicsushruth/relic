@@ -34,9 +34,10 @@ public class VuforiaCoordinateSystem extends LinearOpMode{
 
     VuforiaCoordinateSystemHardwareMap robot = new VuforiaCoordinateSystemHardwareMap();
     VuforiaLocalizer vuforia;
-    OpenGLMatrix xy;
     OpenGLMatrix lastLocation = null;
     OpenGLMatrix robotLocationTransform = null;
+    VectorF trans = null;
+    Orientation rot =null;
 
     double robotX;
     double robotY;
@@ -44,7 +45,6 @@ public class VuforiaCoordinateSystem extends LinearOpMode{
     List<VuforiaTrackable> allTrackables;
 
     RelicRecoveryVuMark vuMark;
-    RelicRecoveryVuMark columnToScore;
 
     VuforiaTrackable relicTemplate;
     VuforiaTrackables relicTrackables;
@@ -53,12 +53,19 @@ public class VuforiaCoordinateSystem extends LinearOpMode{
     double rY;
     double rZ;
     double angleV1;
-    OpenGLMatrix pose;
+    OpenGLMatrix pose = null;
 
     double[] angle = new double[18];
     int scalar = 5;
     @Override
     public void runOpMode() throws InterruptedException {
+
+        robot.init(hardwareMap);
+
+        robot.motorBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 
@@ -72,9 +79,9 @@ public class VuforiaCoordinateSystem extends LinearOpMode{
 
         this.vuforia = ClassFactory.createVuforiaLocalizer(params);
 
-        float mmPerInch        = 25.4f;
-        float mmBotWidth       = 18 * mmPerInch;            // ... or whatever is right for your robot
-        float mmFTCFieldWidth  = (12*12 - 2) * mmPerInch;
+        float mmPerInch = 25.4f;
+        float mmBotWidth = 18 * mmPerInch;            // ... or whatever is right for your robot
+        float mmFTCFieldWidth = (12 * 12 - 2) * mmPerInch;
 
         relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         relicTemplate = relicTrackables.get(0);
@@ -85,26 +92,16 @@ public class VuforiaCoordinateSystem extends LinearOpMode{
 
         //gets position of the pictogram
 
-        allTrackables = new ArrayList<VuforiaTrackable>();
+        allTrackables = new ArrayList<>();
         allTrackables.addAll(relicTrackables);
 
 
-
-        OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
-                .translation(mmBotWidth/2,0,0)
-                .multiplied(Orientation.getRotationMatrix(
-                        AxesReference.EXTRINSIC, AxesOrder.YZY,
-                        AngleUnit.DEGREES, -90, 0, 0));
-        RobotLog.ii(TAG, "phone=%s", format(phoneLocationOnRobot));
+        waitForStart();
 
         relicTrackables.activate();
 
-        waitForStart();
-
 
         while (opModeIsActive()) {
-
-            getRobotCoordinates();
 
             checkVumark();
 
@@ -115,35 +112,35 @@ public class VuforiaCoordinateSystem extends LinearOpMode{
                  * on which VuMark was visible. */
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 telemetry.update();
+
+
+                pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+
+                if (pose != null) {
+
+                    // Then you can extract the positions and angles using the getTranslation and getOrientation methods.
+                    trans = robotLocationTransform.getTranslation();
+                    rot = Orientation.getOrientation(robotLocationTransform, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.RADIANS);
+
+                    // Robot position is defined by the standard Matrix translation (x and y)
+                    robotX = trans.get(0);
+                    robotY = trans.get(1);
+                    robotZ = trans.get(2);
+                    // Robot bearing (in Cartesian system) position is defined by the standard Matrix z rotation
+                    rX = rot.firstAngle;
+                    rY = rot.secondAngle;
+                    rZ = rot.thirdAngle;
+                }
+                telemetry.addData("Robot (X)", robotX);
+                telemetry.addData("Robot (Y)", robotY);
+                telemetry.addData("Robot Bearing", rZ);
+            } else {
+                telemetry.addData("VuMark", "not visible");
             }
+            telemetry.update();
 
-            pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
-
-            if (pose != null)
-            {
-
-        // Then you can extract the positions and angles using the getTranslation and getOrientation methods.
-                VectorF trans = robotLocationTransform.getTranslation();
-                Orientation rot = Orientation.getOrientation(robotLocationTransform, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.RADIANS);
-
-        // Robot position is defined by the standard Matrix translation (x and y)
-                 robotX = trans.get(0);
-                 robotY = trans.get(1);
-                 robotZ = trans.get(2);
-        // Robot bearing (in Cartesian system) position is defined by the standard Matrix z rotation
-                rX = rot.firstAngle;
-                rY = rot.secondAngle;
-                rZ = rot.thirdAngle;
-            }
-            telemetry.addData("Robot (X)", robotX);
-            telemetry.addData("Robot (Y)",robotY);
-            telemetry.addData("Robot Bearing", rZ);
+            goToTarget(lastLocation.getTranslation().get(0) + 20, lastLocation.getTranslation().get(1) + 20);
         }
-            robot.motorBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.motorFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            goToTarget(lastLocation.getTranslation().get(0)+20,lastLocation.getTranslation().get(1)+20);
     }
 
     public void goToTarget(double x, double y)
@@ -187,23 +184,8 @@ public class VuforiaCoordinateSystem extends LinearOpMode{
     String format(OpenGLMatrix transformationMatrix) {
         return transformationMatrix.formatAsTransform();
     }
-    public void getRobotCoordinates()
-    {
-        for (VuforiaTrackable trackable : allTrackables) {
-            /**
-             * getUpdatedRobotLocation() will return null if no new information is available since
-             * the last time that call was made, or if the trackable is not currently visible.
-             * getRobotLocation() will return null if the trackable is not currently visible.
-             */
-            telemetry.addData(trackable.getName(), ((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible() ? "Visible" : "Not Visible");
-            robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
-            if (lastLocation != null) {
-                lastLocation = robotLocationTransform;
-            }
-            telemetry.addData("Robot Location (x) ", (lastLocation.getTranslation().get(0)));
-            telemetry.addData("RobotLocation(Y) ",lastLocation.getTranslation().get(0));
-        }
-    }
+
+
     public void checkVumark()
     {
         while(vuMark == RelicRecoveryVuMark.UNKNOWN){

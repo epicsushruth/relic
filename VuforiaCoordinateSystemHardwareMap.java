@@ -29,7 +29,7 @@ public class VuforiaCoordinateSystemHardwareMap {
 
         // Define and Initialize Motors
         motorLeft = hwMap.dcMotor.get("motor left");
-        motorRight = hwMap.dcMotor.get("motor Right");
+        motorRight = hwMap.dcMotor.get("motor right");
         motorFront = hwMap.dcMotor.get("motor front");
         motorBack = hwMap.dcMotor.get("motor back");
 
