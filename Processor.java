@@ -70,10 +70,10 @@ public abstract class Processor extends LinearOpMode {
 
             // Extract the X, Y, and Z components of the offset of the target relative to the robot
             bot.tX = trans.get(0);
-            bot.tZ = trans.get(1);
-            bot.tX = trans.get(2);
+            bot.tY = trans.get(1);
+            bot.tZ = trans.get(2);
 
-            // X = vertical axis
+            // X = vertical axis,
             // Y = horizonatal Axis
             // Z = Depth Axis
             // Extract the rotational components of the target relative to the robot
@@ -157,7 +157,7 @@ public abstract class Processor extends LinearOpMode {
         bot.motorLB.setPower(0);
     }
 
-    public void go(double targetY, double targetZ){
+    public void go(double targetX, double targetZ){
         double a;
         double b;
         double c;
@@ -167,29 +167,35 @@ public abstract class Processor extends LinearOpMode {
         double z;
         double angleV1;
 
-        a = targetY - bot.tX;
+        a = targetX - bot.tX;
         b = targetZ - bot.tZ;
 
         double p = .01; //correction factor;
         bot.vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
-        while(Math.abs(a)>(10)|| Math.abs(b)>(10)){
-            a = targetY - bot.tX;
+        while(Math.abs(a)>(50)|| Math.abs(b)>(50)){
+            a = targetX - bot.tX;
             b = targetZ - bot.tZ;
             c = Math.sqrt(a*a+b*b);
 
-            angleV1 = Math.atan((bot.tZ/bot.tX));
+            angleV1 = Math.atan((bot.tX/bot.tZ));
 
-            y = -a/c;
-            x= b/c;
+            y = b/c;
+            x= a/c;
             z= p*((bot.rY*Math.PI/180)+(angleV1));
 
             bot.motorLF.setPower(Range.clip((y-x-z)/2,-1,1));
             bot.motorRF.setPower(Range.clip((-y-x-z)/2,-1,1));
-            bot.motorRB.setPower(Range.clip((-y+x-z)/2,-1,1));
-            bot.motorLB.setPower(Range.clip((y+x-z)/2,-1,1));
+            bot.motorRB.setPower(Range.clip((y+x-z)/2,-1,1));
+            bot.motorLB.setPower(Range.clip((-y+x-z)/2,-1,1));
 
             telemetry.addData("a%f",a);
+            telemetry.addData("bot X",bot.tX );
+            telemetry.addData("target X", targetX);
+            telemetry.addData("target X - bot X", targetX - bot.tX);
             telemetry.addData("b%f",b);
+            telemetry.addData("bot Z",bot.tZ);
+            telemetry.addData("target Z", targetZ);
+            telemetry.addData("target Z - bot Z", targetZ - bot.tZ);
             telemetry.addData("c%f",c);
             telemetry.addData("x%f",x);
             telemetry.addData("y%f",y);
@@ -222,14 +228,14 @@ public abstract class Processor extends LinearOpMode {
 
         double yCoordinate = y - robotTranslationY;
         double xCoordinate = x - robotTranslationX;
-        while(!(Math.abs(yCoordinate)>(10) ^ Math.abs(xCoordinate)>(10))) {
+        while(!(Math.abs(yCoordinate)>(70) ^ Math.abs(xCoordinate)>(70))) {
 
             robotTranslationX = bot.tX;
             robotTranslationY = bot.tZ;
 
             yCoordinate = y - robotTranslationY;
             xCoordinate = x - robotTranslationX;
-            double angleV1 = Math.atan((bot.tX/bot.tZ));
+            double angleV1 = Math.atan((bot.tX/bot.tZ ));
             if(bot.tZ<0)
             {
                 angleV1 += 180;
@@ -237,16 +243,11 @@ public abstract class Processor extends LinearOpMode {
 
             //double speedA = 0.3;
             double speedZ = 0;
-            /*
-            if(angleV1>3&&angleV1<16)
-            {
-                speedZ = angle[(int)(angleV1)];
-            }
-            */
+
             //double speedB = ((speedA * (yCoordinate - xCoordinate)) / (yCoordinate + xCoordinate));
             double ang = Math.atan2(yCoordinate, xCoordinate) - Math.PI/4;
             double norm = Math.abs(Math.sin(ang)) + Math.abs(Math.cos(ang));
-            norm = 4;
+            norm = 4*Math.sqrt(yCoordinate*yCoordinate+xCoordinate*xCoordinate);
             double ynorm = yCoordinate/norm;
             double xnorm = xCoordinate/norm;
             bot.motorRF.setPower(ynorm - xnorm);
@@ -257,8 +258,12 @@ public abstract class Processor extends LinearOpMode {
             telemetry.addData("motorRFPower", bot.motorRF.getPower());
             telemetry.addData("motorLFPower", bot.motorLF.getPower());
             telemetry.addData("motorRBPower", bot.motorRB.getPower());
+            telemetry.addData("motorRFPower", bot.motorRF.getPower());
+            telemetry.addData("ynorm", ynorm);
+            telemetry.addData("xnorm",xnorm);
             telemetry.addData("motorRBPower", bot.motorRF.getPower());
-
+            telemetry.addData("motorRBPower", bot.motorRF.getPower());
+            telemetry.addData("motorRBPower", bot.motorRF.getPower());
 
             checkVu();
 
