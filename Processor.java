@@ -226,10 +226,47 @@ public abstract class Processor extends LinearOpMode {
         double robotTranslationY = bot.tZ;
         double robotTranslationX = bot.tX;
 
+        int index =0;
+
         double yCoordinate = y - robotTranslationY;
         double xCoordinate = x - robotTranslationX;
-        while(!(Math.abs(yCoordinate)>(70) ^ Math.abs(xCoordinate)>(70))) {
+        double robotBearing;
+        double targetRange;
+        double targetBearing;
+        double relativeBearing;
+        //!(Math.abs(yCoordinate)>(70) ^ Math.abs(xCoordinate)>(70))
 
+        robotBearing = bot.rZ;
+
+        // target range is based on distance from robot position to origin.
+        targetRange = Math.hypot(bot.tX, bot.tY);
+
+        // target bearing is based on angle formed between the X axis to the target range line
+        targetBearing = Math.toDegrees(-Math.asin(bot.tY / targetRange));
+
+        // Target relative bearing is the target Heading relative to the direction the robot is pointing.
+        relativeBearing = targetBearing - robotBearing;
+/*
+        while(Math.abs(relativeBearing)>10)
+        {
+            bot.motorLB.setPower(0.1);
+            bot.motorLF.setPower(0.1);
+            bot.motorRB.setPower(0.1);
+            bot.motorRF.setPower(0.1);
+            checkVu();
+
+            robotBearing = bot.rZ;
+            // target range is based on distance from robot position to origin.
+            targetRange = Math.hypot(bot.tX, bot.tZ);
+
+            // target bearing is based on angle formed between the X axis to the target range line
+            targetBearing = Math.toDegrees(-Math.asin(bot.tZ / targetRange));
+
+            // Target relative bearing is the target Heading relative to the direction the robot is pointing.
+            relativeBearing = targetBearing - robotBearing;
+        }
+*/
+        while(Math.abs(xCoordinate)>(50)|| Math.abs(yCoordinate)>(50)) {
             robotTranslationX = bot.tX;
             robotTranslationY = bot.tZ;
 
@@ -243,18 +280,31 @@ public abstract class Processor extends LinearOpMode {
 
             //double speedA = 0.3;
             double speedZ = 0;
-
+            if (angleV1>17)
+            {
+                index = 17;
+            }
+            else
+            {
+                index = (int) angleV1;
+            }
+            speedZ = angle[index];
+            speedZ /= 60;
+            speedZ = 0;
             //double speedB = ((speedA * (yCoordinate - xCoordinate)) / (yCoordinate + xCoordinate));
             double ang = Math.atan2(yCoordinate, xCoordinate) - Math.PI/4;
             double norm = Math.abs(Math.sin(ang)) + Math.abs(Math.cos(ang));
             norm = 4*Math.sqrt(yCoordinate*yCoordinate+xCoordinate*xCoordinate);
             double ynorm = yCoordinate/norm;
             double xnorm = xCoordinate/norm;
-            bot.motorRF.setPower(ynorm - xnorm);
+            bot.motorRF.setPower((ynorm - xnorm));
+            telemetry.addData("MotorRF",bot.motorRF.getPower());
             bot.motorLB.setPower(-(ynorm -  xnorm));
-            bot.motorLF.setPower((ynorm + xnorm));
-            bot.motorRB.setPower(-(ynorm + xnorm));
-
+            telemetry.addData("MotorLB",bot.motorLB.getPower());
+            bot.motorLF.setPower(-(ynorm + xnorm));
+            telemetry.addData("MotorLF",bot.motorLF.getPower());
+            bot.motorRB.setPower((ynorm + xnorm));
+            telemetry.addData("MotorRB",bot.motorRB.getPower());
             telemetry.addData("motorRFPower", bot.motorRF.getPower());
             telemetry.addData("motorLFPower", bot.motorLF.getPower());
             telemetry.addData("motorRBPower", bot.motorRB.getPower());
@@ -268,7 +318,13 @@ public abstract class Processor extends LinearOpMode {
             checkVu();
 
         }
+        stopAllMotors();
     }
-
+        public void stopAllMotors(){
+            bot.motorLB.setPower(0);
+            bot.motorLF.setPower(0);
+            bot.motorRB.setPower(0);
+            bot.motorRF.setPower(0);
+        }
 
 }
