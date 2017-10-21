@@ -37,15 +37,19 @@ public class Tele extends OpMode{
         ypow = gamepad1.left_stick_y;// variable names are incoorect
         xpow = gamepad1.left_stick_x;
 
-        double mag = -Math.sqrt(ypow * ypow + xpow * xpow);
+        double mag = Math.sqrt(ypow * ypow + xpow * xpow);
         double theta = Math.atan2(ypow, xpow);
         double aPair = mag * Math.cos(theta - Math.PI/4);
         double bPair = mag * Math.sin(theta - Math.PI/4);
 
-        bot.motorLF.setPower(bPair+zpow);
-        bot.motorRF.setPower(-aPair+zpow);
-        bot.motorRB.setPower(-bPair+zpow);
-        bot.motorLB.setPower(aPair+zpow);
+        if(gamepad1.right_trigger>0.2)
+        {
+
+        }
+        bot.motorLF.setPower(0.6*(bPair-zpow));
+        bot.motorRF.setPower(0.6*(-aPair-zpow));
+        bot.motorRB.setPower(0.6*(-bPair-zpow));
+        bot.motorLB.setPower(0.6*(aPair-zpow));
 
         double slidePower = -gamepad2.left_stick_y;
         if(slidePower>0)
@@ -56,15 +60,23 @@ public class Tele extends OpMode{
         bot.slideMotor.setPower(slidePower);
         bot.slideMotor2.setPower(slidePower);
 
-        if(gamepad2.x)
-        {
-            bot.glyphServo1.setPosition(0.4);
-            bot.glyphServo2.setPosition(0.6);
-        }
         if(gamepad2.a)
         {
-            bot.glyphServo1.setPosition(0.85);
-            bot.glyphServo2.setPosition(0.15);
+            bot.glyphServo1.setPosition(0.4);
+            bot.glyphServo2.setPosition(0.429);
+        }
+        if(gamepad2.b)
+        {
+            bot.glyphServo1.setPosition(0.7);
+        }
+        if(gamepad2.x)
+        {
+            bot.glyphServo2.setPosition(0.25);
+        }
+        if(gamepad2.y)
+        {
+            bot.glyphServo1.setPosition(0.7);
+            bot.glyphServo2.setPosition(0.25);
         }
     }
     public void checkVu() {
