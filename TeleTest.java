@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -16,8 +15,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 /**
  * Created by wolfie on 9/15/17.
  */
-@TeleOp(name = "XbadTele", group = "X")
-public class Tele extends OpMode{
+@TeleOp(name = "XbadTele2", group = "X")
+public class TeleTest extends OpMode{
     Map bot = new Map();
     double xpow;
     double ypow;
@@ -27,8 +26,6 @@ public class Tele extends OpMode{
     @Override
     public void init() {
         bot.init(hardwareMap);
-        bot.glyphServo1.setPosition(0.85);
-        bot.glyphServo2.setPosition(0.15);
     }
 
     @Override
@@ -37,35 +34,18 @@ public class Tele extends OpMode{
         ypow = gamepad1.left_stick_y;// variable names are incoorect
         xpow = gamepad1.left_stick_x;
 
-        double mag = -Math.sqrt(ypow * ypow + xpow * xpow);
+        double mag = Math.sqrt(ypow * ypow + xpow * xpow);
         double theta = Math.atan2(ypow, xpow);
         double aPair = mag * Math.cos(theta - Math.PI/4);
         double bPair = mag * Math.sin(theta - Math.PI/4);
 
-        bot.motorLF.setPower(bPair+zpow);
-        bot.motorRF.setPower(-aPair+zpow);
-        bot.motorRB.setPower(-bPair+zpow);
-        bot.motorLB.setPower(aPair+zpow);
 
-        double slidePower = -gamepad2.left_stick_y;
-        if(slidePower>0)
-        {
-            slidePower /= 2;
-        }
+        bot.motorLF.setPower(bPair-zpow);
+        bot.motorRF.setPower(-aPair-zpow);
+        bot.motorRB.setPower(-bPair-zpow);
+        bot.motorLB.setPower(aPair-zpow);
 
-        bot.slideMotor.setPower(slidePower);
-        bot.slideMotor2.setPower(slidePower);
-
-        if(gamepad2.x)
-        {
-            bot.glyphServo1.setPosition(0.4);
-            bot.glyphServo2.setPosition(0.6);
-        }
-        if(gamepad2.a)
-        {
-            bot.glyphServo1.setPosition(0.85);
-            bot.glyphServo2.setPosition(0.15);
-        }
+        checkVu();
     }
     public void checkVu() {
 
