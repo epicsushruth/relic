@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 /**
  * Created by Sushr on 10/13/2017.
  */
-@Autonomous(name = "Auto 3xr", group ="Concept")
+@Autonomous(name = "Auto one testjfjfrjfjfjfjfj", group ="Concept")
 
-public class AutoPath2 extends TestProcessor{
+public class AllOne extends TestProcessor{
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -16,7 +16,16 @@ public class AutoPath2 extends TestProcessor{
 
         waitForStart();
 
-        strafeRight(10,.4);
+
+        while(opModeIsActive())
+        {
+            bot.motorLB.setPower(1);
+            bot.motorLF.setPower(1);
+            bot.motorRB.setPower(1);
+            bot.motorRF.setPower(1);
+        }
+
+
     }
 }
 

@@ -42,10 +42,6 @@ public class Tele extends OpMode{
         double aPair = mag * Math.cos(theta - Math.PI/4);
         double bPair = mag * Math.sin(theta - Math.PI/4);
 
-        if(gamepad1.right_trigger>0.2)
-        {
-
-        }
         bot.motorLF.setPower(0.6*(bPair-zpow));
         bot.motorRF.setPower(0.6*(-aPair-zpow));
         bot.motorRB.setPower(0.6*(-bPair-zpow));
