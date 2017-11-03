@@ -58,7 +58,6 @@ public class AutoPathScrimmage extends TestProcessor{
         bot.runtime.reset();
 
         encoderDrive(DRIVE_SPEED,  13,-13,13,-13, 10.0);  // Moves forward
-        turn(-90);
         //encoderDrive(TURN_SPEED,   -22*Math.PI/5.5, 22*Math.PI/5.5, -22*Math.PI/5.5, 22*Math.PI/5.5, 10.0);
 
 
