@@ -48,9 +48,8 @@ public class AutoPathScrimmage extends TestProcessor{
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         //motorRF,motorLF,motorRB,motorLB
-        checkCol();
-        int extraction = extractColumn(bot.columnToScore);
-        telemetry.addData("Extraction Value", extraction);
+
+
         bot.runtime.reset();
         while(bot.runtime.seconds()>6)
         {
@@ -58,9 +57,10 @@ public class AutoPathScrimmage extends TestProcessor{
         }
         bot.runtime.reset();
 
-        encoderDrive(DRIVE_SPEED,  12,12,12,12, 10.0);  // Moves forward
-        encoderDrive(TURN_SPEED,   -22*Math.PI/5.5, 22*Math.PI/5.5, -22*Math.PI/5.5, 22*Math.PI/5.5, 10.0);
-        driveToColumn(extraction);
+        encoderDrive(DRIVE_SPEED,  13,-13,13,-13, 10.0);  // Moves forward
+        turn(-90);
+        //encoderDrive(TURN_SPEED,   -22*Math.PI/5.5, 22*Math.PI/5.5, -22*Math.PI/5.5, 22*Math.PI/5.5, 10.0);
+
 
 
         telemetry.addData("Path", "Complete");

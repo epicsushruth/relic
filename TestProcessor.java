@@ -547,5 +547,61 @@ public abstract class TestProcessor extends LinearOpMode {
         int count = 0;
         return count;
     }
+    public void turn(double target) {
+        Orientation ref = bot.imu.getAngularOrientation();
+
+        double heading = ref.firstAngle;
+        double correction;
+        double error;
+
+        double angleWanted = target + heading;
+
+        ref = bot.imu.getAngularOrientation();
+        double speed = turning(target, ref.firstAngle, angleWanted);
+        while(speed != 0 ){
+            ref = bot.imu.getAngularOrientation();
+            speed = turning(target, ref.firstAngle, angleWanted);
+            accelerate(speed);
+            recordTelemetry(target, angleWanted, ref, speed);
+        }
+        accelerate(0);
+    }
+
+    double turning(double target, double firstAngle, double angleWanted) {
+        double error;
+        double correction;
+        double speed;
+        error = angleWanted - firstAngle;
+
+        correction = Range.clip( error * P_TURN_COEFF,-1,1);
+
+        if(error <= HEADING_THRESHOLD){
+            return 0;
+        }
+        else{
+            speed = TURN_SPEED * correction;
+        }
+        return speed;
+    }
+
+    public void recordTelemetry(double target, double angleWanted, Orientation ref, double speed) {
+        telemetry.addData("first angle",ref.firstAngle);
+        telemetry.addData("second angle",ref.secondAngle);
+        telemetry.addData("third angle",ref.thirdAngle);
+        telemetry.addData("target",target);
+        telemetry.addData("speed ",speed);
+        telemetry.addData("error", angleWanted - ref.firstAngle);
+        telemetry.addData("angleWanted", angleWanted);
+
+        telemetry.update();
+    }
+
+    private void accelerate(double speed) {
+        double clip_speed = Range.clip(speed, -1, 1);
+        bot.motorLF.setPower(clip_speed);
+        bot.motorRF.setPower(clip_speed);
+        bot.motorRB.setPower(clip_speed);
+        bot.motorLB.setPower(clip_speed);
+    }
 
 }

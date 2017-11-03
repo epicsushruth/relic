@@ -125,8 +125,8 @@ public class TestMap {
         cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters param = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
-        motorLF.setDirection(DcMotor.Direction.REVERSE);
-        motorRB.setDirection(DcMotor.Direction.REVERSE);
+        motorLF.setDirection(DcMotor.Direction.FORWARD);
+        motorRB.setDirection(DcMotor.Direction.FORWARD);
         motorRF.setDirection(DcMotor.Direction.FORWARD);
         motorLB.setDirection(DcMotor.Direction.FORWARD);
 
