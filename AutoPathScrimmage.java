@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * Created by Sushr on 10/28/2017.
  */
 @Autonomous(name = "AutoPathScrimmage1234. ", group = "range sensor")
-public class AutoPathScrimmage extends TestProcessor{
+public class AutoPathScrimmage extends Processor{
+    ElapsedTime time = new ElapsedTime();
     @Override
     public void runOpMode() {
 
@@ -50,15 +52,24 @@ public class AutoPathScrimmage extends TestProcessor{
         //motorRF,motorLF,motorRB,motorLB
 
 
-        bot.runtime.reset();
-        while(bot.runtime.seconds()>6)
-        {
 
+        time.reset();
+        while(time.seconds()<1) {
+            bot.glyphServo1.setPosition(0.4);
+            bot.glyphServo2.setPosition(0.429);
         }
-        bot.runtime.reset();
+        time.reset();
+        while(time.seconds()<1.5)
+        {
+            bot.slideMotor.setPower(1);
+            bot.slideMotor.setPower(1);
+        }
 
-        encoderDrive(DRIVE_SPEED,  13,-13,13,-13, 10.0);  // Moves forward
-        //encoderDrive(TURN_SPEED,   -22*Math.PI/5.5, 22*Math.PI/5.5, -22*Math.PI/5.5, 22*Math.PI/5.5, 10.0);
+        encoderDrive(0.3,   -22*Math.PI/10, -22*Math.PI/10, -22*Math.PI/10, -22*Math.PI/10, 10.0);
+        encoderDrive(0.3,   22*Math.PI/10, 22*Math.PI/10,  22*Math.PI/10, 22*Math.PI/10, 10.0);
+
+        encoderDrive(DRIVE_SPEED,  15,-15,15,-15, 10.0);  // Moves forward
+        encoderDrive(TURN_SPEED,   22*Math.PI/5.5, -22*Math.PI/5.5, 22*Math.PI/5.5, -22*Math.PI/5.5, 10.0);
 
 
 
