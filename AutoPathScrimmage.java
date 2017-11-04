@@ -54,22 +54,31 @@ public class AutoPathScrimmage extends Processor{
 
 
         time.reset();
-        while(time.seconds()<1) {
+        while(time.seconds()<1.5) {
             bot.glyphServo1.setPosition(0.4);
             bot.glyphServo2.setPosition(0.429);
         }
         time.reset();
-        while(time.seconds()<1.5)
+        while(time.seconds()<1)
         {
-            bot.slideMotor.setPower(1);
-            bot.slideMotor.setPower(1);
+            bot.slideMotor.setPower(-1);
+            bot.slideMotor2.setPower(-1);
         }
 
-        encoderDrive(0.3,   -22*Math.PI/10, -22*Math.PI/10, -22*Math.PI/10, -22*Math.PI/10, 10.0);
-        encoderDrive(0.3,   22*Math.PI/10, 22*Math.PI/10,  22*Math.PI/10, 22*Math.PI/10, 10.0);
+        //encoderDrive(0.3,   -22*Math.PI/20, -22*Math.PI/20, -22*Math.PI/20, -22*Math.PI/20, 10.0);
+        //
+        // encoderDrive(0.3,   22*Math.PI/20, 22*Math.PI/20,  22*Math.PI/20, 22*Math.PI/20, 10.0);
+
+        turn(-15);
+        time.reset();
+        while(time.seconds()<1)
+        {
+
+        }
+        turn(-15);
 
         encoderDrive(DRIVE_SPEED,  15,-15,15,-15, 10.0);  // Moves forward
-        encoderDrive(TURN_SPEED,   22*Math.PI/5.5, -22*Math.PI/5.5, 22*Math.PI/5.5, -22*Math.PI/5.5, 10.0);
+        encoderDrive(TURN_SPEED,   -22*Math.PI/5.5, -22*Math.PI/5.5, -22*Math.PI/5.5, -22*Math.PI/5.5, 10.0);
 
 
 

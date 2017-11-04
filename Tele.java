@@ -27,7 +27,7 @@ public class Tele extends OpMode{
     @Override
     public void init() {
         bot.init(hardwareMap);
-        bot.glyphServo1.setPosition(0.85);
+        bot.glyphServo1.setPosition(0.75);
         bot.glyphServo2.setPosition(0.15);
     }
 
@@ -50,7 +50,7 @@ public class Tele extends OpMode{
         double slidePower = -gamepad2.left_stick_y;
         if(slidePower>0)
         {
-            slidePower /= 2;
+            slidePower /= 4;
         }
 
         bot.slideMotor.setPower(slidePower);
@@ -58,21 +58,21 @@ public class Tele extends OpMode{
 
         if(gamepad2.a)
         {
-            bot.glyphServo1.setPosition(0.4);
+            bot.glyphServo1.setPosition(0.47);
             bot.glyphServo2.setPosition(0.429);
         }
         if(gamepad2.b)
         {
-            bot.glyphServo1.setPosition(0.7);
+            bot.glyphServo1.setPosition(0.55);
         }
         if(gamepad2.x)
         {
-            bot.glyphServo2.setPosition(0.25);
+            bot.glyphServo2.setPosition(0.32);
         }
         if(gamepad2.y)
         {
-            bot.glyphServo1.setPosition(0.7);
-            bot.glyphServo2.setPosition(0.25);
+            bot.glyphServo1.setPosition(0.55);
+            bot.glyphServo2.setPosition(0.32);
         }
     }
     public void checkVu() {
