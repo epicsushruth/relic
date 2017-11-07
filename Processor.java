@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -199,6 +200,167 @@ public abstract class Processor extends LinearOpMode {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
 
+    public void knockJewel(boolean isTeamRed){
+        bot.jewelServo.setPosition(.7);
+        int toTurn = checkJewel(isTeamRed,isSensorRed());
+        turn(toTurn);
+        turn(-toTurn);
+    }
+
+    public  int checkJewel(boolean isTeamRed, boolean isSensorRed){
+        if(isTeamRed){
+            if( isTeamRed != isSensorRed){
+                return 15;
+            }
+            else/*isTeamRed != isSensorRed*/{
+                return -15;
+            }
+        }
+        else{
+            if(isTeamRed == isSensorRed){
+                return -15;
+            }
+            else/*isTeamRed != isSensorRed*/{
+                return 15;
+            }
+        }
+    }
+
+    public boolean isSensorRed(){
+        return  bot.colorSensor.red() > bot.colorSensor.blue();
+    }
+
+
+
+    public void gotoColumnRight() {// the direction approating the cyrpoto box changes depending on the side
+
+
+        if (bot.columnToScore == RelicRecoveryVuMark.LEFT) {
+            goPulsesPrep(1);
+        }
+        if (bot.columnToScore == RelicRecoveryVuMark.CENTER) {
+            goPulsesPrep(2);
+        }
+        if (bot.columnToScore == RelicRecoveryVuMark.RIGHT) {
+            goPulsesPrep(3);
+        }
+        while(bot.runtime.milliseconds() < 1000){
+            bot.motorLF.setPower(-DRIVE_SPEED);
+            bot.motorRF.setPower(-DRIVE_SPEED);
+            bot.motorRB.setPower(DRIVE_SPEED);
+            bot.motorLB.setPower(DRIVE_SPEED);
+        }
+        bot.runtime.reset();
+
+        while(bot.rangeSensor.getDistance(DistanceUnit.CM)>25){
+            bot.motorLF.setPower(DRIVE_SPEED);
+            bot.motorRF.setPower(DRIVE_SPEED);
+            bot.motorRB.setPower(-DRIVE_SPEED);
+            bot.motorLB.setPower(-DRIVE_SPEED);
+        }
+    }
+    public void gotoColumnLeft() {// the direction approating the cyrpoto box changes depending on the side
+
+
+        if (bot.columnToScore == RelicRecoveryVuMark.RIGHT) {
+            goPulses(1);
+        }
+        if (bot.columnToScore == RelicRecoveryVuMark.CENTER) {
+            goPulses(2);
+        }
+        if (bot.columnToScore == RelicRecoveryVuMark.LEFT) {
+            goPulses(3);
+        }
+        while(bot.runtime.milliseconds() < 1000){
+            bot.motorLF.setPower(DRIVE_SPEED);
+            bot.motorRF.setPower(DRIVE_SPEED);
+            bot.motorRB.setPower(-DRIVE_SPEED);
+            bot.motorLB.setPower(-DRIVE_SPEED);
+        }
+        bot.runtime.reset();
+
+        while(bot.rangeSensor.getDistance(DistanceUnit.CM)>25){
+            bot.motorLF.setPower(-DRIVE_SPEED);
+            bot.motorRF.setPower(-DRIVE_SPEED);
+            bot.motorRB.setPower(DRIVE_SPEED);
+            bot.motorLB.setPower(DRIVE_SPEED);
+        }
+    }
+    public void goPulses(int numOfCol) {
+        int count = 0;
+        while(count < numOfCol){
+
+            bot.motorLF.setPower(DRIVE_SPEED);
+            bot.motorRF.setPower(DRIVE_SPEED);
+            bot.motorRB.setPower(-DRIVE_SPEED);
+            bot.motorLB.setPower(-DRIVE_SPEED);
+
+            if (bot.rangeSensor.getDistance(DistanceUnit.CM)<25) {
+                count++;
+                bot.runtime.reset();
+
+                while(bot.runtime.milliseconds() < 1000){
+                    bot.motorLF.setPower(DRIVE_SPEED);
+                    bot.motorRF.setPower(DRIVE_SPEED);
+                    bot.motorRB.setPower(-DRIVE_SPEED);
+                    bot.motorLB.setPower(-DRIVE_SPEED);
+                }
+                bot.runtime.reset();
+                // clear the column so the same colmn is not counted three time
+            }
+            telemetry.addData("count",count );
+            telemetry.update();
+        }
+    }
+    public void goPulsesPrep(int numOfCol) {
+        int count = 0;
+        while(count < numOfCol){
+
+            bot.motorLF.setPower(-DRIVE_SPEED);
+            bot.motorRF.setPower(-DRIVE_SPEED);
+            bot.motorRB.setPower(DRIVE_SPEED);
+            bot.motorLB.setPower(DRIVE_SPEED);
+
+            if (bot.rangeSensor.getDistance(DistanceUnit.CM)<25) {
+                count++;
+                bot.runtime.reset();
+
+                while(bot.runtime.milliseconds() < 1000){
+                    bot.motorLF.setPower(-DRIVE_SPEED);
+                    bot.motorRF.setPower(-DRIVE_SPEED);
+                    bot.motorRB.setPower(DRIVE_SPEED);
+                    bot.motorLB.setPower(DRIVE_SPEED);
+                }
+                bot.runtime.reset();
+                // clear the column so the same colmn is not counted three time
+            }
+            telemetry.addData("count",count );
+            telemetry.update();
+        }
+    }
+
+    public void score() {
+        bot.glyphServo1.setPosition(0.75);
+        bot.glyphServo2.setPosition(0.15);
+        sleep(500);
+        while(bot.rangeSensor.getDistance(DistanceUnit.CM)>1){// go until close enouhg to column
+            bot.motorLF.setPower(-DRIVE_SPEED);
+            bot.motorRF.setPower(DRIVE_SPEED);
+            bot.motorRB.setPower(DRIVE_SPEED);
+            bot.motorLB.setPower(-DRIVE_SPEED);
+        }
+
+        bot.runtime.reset();
+
+        while(bot.runtime.milliseconds() < 1000){
+            bot.motorLF.setPower(DRIVE_SPEED);
+            bot.motorRF.setPower(-DRIVE_SPEED);
+            bot.motorRB.setPower(-DRIVE_SPEED);
+            bot.motorLB.setPower(DRIVE_SPEED);
+        }
+        bot.runtime.reset();
+
+    }
 
     // SEPERATE STATE LATER IS SCORE STATE
     // PASS IN PARAMETERS THAT WILL TELL HOW TO SCORE
@@ -218,70 +380,8 @@ public abstract class Processor extends LinearOpMode {
         }
     }
 
-    public void score(){
-        //MOTOR MOTIONS TO SCORE
-    }
 
-    public void getOffStone(){
-        //accesses the gyro values
-        //drive based on Vuforia in
-    }
 
-    public void drive(){
-
-    }
-    // THIS SHOULD BE A STATE
-    public void faceImage(){
-        checkVu();
-        while(bot.vuMark == RelicRecoveryVuMark.UNKNOWN){
-            bot.vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
-            bot.motorRB.setPower(.1);
-            bot.motorRF.setPower(.1);
-            bot.motorLF.setPower(.1);
-            bot.motorLB.setPower(.1);
-            checkVu();
-        }
-        bot.motorRB.setPower(0);
-        bot.motorRF.setPower(0);
-        bot.motorLF.setPower(0);
-        bot.motorLB.setPower(0);
-    }
-    public void turn(double target) {
-        Orientation ref = bot.imu.getAngularOrientation();
-
-        double heading = ref.firstAngle;
-        double correction;
-        double error;
-
-        double angleWanted = target + heading;
-
-        ref = bot.imu.getAngularOrientation();
-        double speed = turning(ref.firstAngle, angleWanted);
-        while(speed != 0 ){
-            ref = bot.imu.getAngularOrientation();
-            speed = turning(ref.firstAngle, angleWanted);
-            accelerate(speed);
-            recordTelemetry(target, angleWanted, ref, speed);
-        }
-        accelerate(0);
-    }
-
-    double turning(double firstAngle, double angleWanted) {
-        double error;
-        double correction;
-        double speed;
-        error = angleWanted - firstAngle;
-
-        correction = Range.clip( error * P_TURN_COEFF,-1,1);
-
-        if(Math.abs(error) <= HEADING_THRESHOLD){
-            return 0;
-        }
-        else{
-            speed = TURN_SPEED * correction;
-        }
-        return speed;
-    }
 
     public void recordTelemetry(double target, double angleWanted, Orientation ref, double speed) {
         telemetry.addData("first angle",ref.firstAngle);
@@ -359,6 +459,7 @@ public abstract class Processor extends LinearOpMode {
         bot.motorLB.setPower(0);
 
     }
+
     public void goToTarget(double x, double y)
     {
 
@@ -473,71 +574,45 @@ public abstract class Processor extends LinearOpMode {
             bot.motorRF.setPower(0);
         }
 
-    
+    public void turn(double target) {
+        Orientation ref = bot.imu.getAngularOrientation();
 
-    //distance is in inches
-    public void strafeForward(int distance) {
-        double temp = COUNTS_PER_MOTOR_REV * (distance / OMNI_WHEEL_CIRCUMFERENCE);
-        bot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        double heading = ref.firstAngle;
+        double correction;
+        double error;
 
-        while ((bot.motorLB.getCurrentPosition() < temp + 100) && (bot.motorRF.getCurrentPosition() < temp + 100) && (bot.motorLF.getCurrentPosition() < temp + 100) && (bot.motorRB.getCurrentPosition() < temp + 100)) {
-            bot.motorLB.setPower(-0.5);
-            bot.motorRF.setPower(0.5);
-            bot.motorLF.setPower(-0.5);
-            bot.motorRB.setPower(0.5);
+        double angleWanted = target + heading;
+
+        ref = bot.imu.getAngularOrientation();
+        double speed = turning(ref.firstAngle, angleWanted);
+        while(speed != 0 ){
+            ref = bot.imu.getAngularOrientation();
+            speed = turning(ref.firstAngle, angleWanted);
+            accelerate(speed);
+            recordTelemetry(target, angleWanted, ref, speed);
         }
-
+        accelerate(0);
     }
 
-    public void strafeBack(int distance) {
-        double temp = COUNTS_PER_MOTOR_REV * (distance / OMNI_WHEEL_CIRCUMFERENCE);
-        bot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    double turning(double firstAngle, double angleWanted) {
+        double error;
+        double correction;
+        double speed;
+        error = angleWanted - firstAngle;
 
-        while ((bot.motorLB.getCurrentPosition() < temp + 100) || (bot.motorRF.getCurrentPosition() < temp + 100) || (bot.motorLF.getCurrentPosition() < temp + 100) || (bot.motorRB.getCurrentPosition() < temp + 100)) {
-            bot.motorLB.setPower(0.5);
-            bot.motorRF.setPower(-0.5);
-            bot.motorLF.setPower(0.5);
-            bot.motorRB.setPower(-0.5);
+        correction = Range.clip( error * P_TURN_COEFF,-1,1);
+
+        if(Math.abs(error) <= HEADING_THRESHOLD){
+            return 0;
         }
-
+        else{
+            speed = TURN_SPEED * correction;
+        }
+        return speed;
     }
 
-    public void strafeLeft(int distance) {
-        double temp = COUNTS_PER_MOTOR_REV * (distance / OMNI_WHEEL_CIRCUMFERENCE);
-        bot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        while ((bot.motorLB.getCurrentPosition() < temp + 100) && (bot.motorRF.getCurrentPosition() < temp + 100) && (bot.motorLF.getCurrentPosition() < temp + 100) && (bot.motorRB.getCurrentPosition() < temp + 100)) {
-            bot.motorLB.setPower(-0.5);
-            bot.motorRF.setPower(0.5);
-            bot.motorLF.setPower(0.5);
-            bot.motorRB.setPower(-0.5);
-        }
 
-    }
 
-    public void strafeRight(int distance) {
-        double temp = COUNTS_PER_MOTOR_REV * (distance / OMNI_WHEEL_CIRCUMFERENCE);
-        bot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        while ((bot.motorLB.getCurrentPosition() < temp + 100) && (bot.motorRF.getCurrentPosition() < temp + 100) && (bot.motorLF.getCurrentPosition() < temp + 100) && (bot.motorRB.getCurrentPosition() < temp + 100)) {
-            bot.motorLB.setPower(0.5);
-            bot.motorRF.setPower(-0.5);
-            bot.motorLF.setPower(-0.5);
-            bot.motorRB.setPower(0.5);
-        }
-
-    }
 
 }

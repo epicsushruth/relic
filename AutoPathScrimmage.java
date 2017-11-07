@@ -51,8 +51,8 @@ public class AutoPathScrimmage extends Processor{
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         //motorRF,motorLF,motorRB,motorLB
 
-
-
+        checkCol();
+/*
         time.reset();
         while(time.seconds()<1.5) {
             bot.glyphServo1.setPosition(0.4);
@@ -64,21 +64,21 @@ public class AutoPathScrimmage extends Processor{
             bot.slideMotor.setPower(-1);
             bot.slideMotor2.setPower(-1);
         }
-
+*/
         //encoderDrive(0.3,   -22*Math.PI/20, -22*Math.PI/20, -22*Math.PI/20, -22*Math.PI/20, 10.0);
         //
         // encoderDrive(0.3,   22*Math.PI/20, 22*Math.PI/20,  22*Math.PI/20, 22*Math.PI/20, 10.0);
-
-        turn(-15);
         time.reset();
         while(time.seconds()<1)
         {
 
         }
-        turn(-15);
+
 
         encoderDrive(DRIVE_SPEED,  15,-15,15,-15, 10.0);  // Moves forward
         encoderDrive(TURN_SPEED,   -22*Math.PI/5.5, -22*Math.PI/5.5, -22*Math.PI/5.5, -22*Math.PI/5.5, 10.0);
+        gotoColumnRight();
+        encoderDrive(DRIVE_SPEED,15,-15,15,-15,5.0);
 
 
 

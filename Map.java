@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -77,7 +79,11 @@ public class Map {
 
     Servo glyphServo1;
     Servo glyphServo2;
+    Servo jewelServo;
 
+    ModernRoboticsI2cRangeSensor rangeSensor = null;
+
+    ModernRoboticsI2cColorSensor colorSensor = null;
 
     int cameraMonitorViewId;
     VuforiaTrackables relicTrackables;
@@ -115,7 +121,6 @@ public class Map {
         glyphServo1 = hwMap.servo.get("glyphServo1");
         glyphServo2 = hwMap.servo.get("glyphServo2");
 
-
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -125,6 +130,9 @@ public class Map {
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         imu.initialize(parameters);
+
+        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class,"rangeSensor");
+        colorSensor = hwMap.get(ModernRoboticsI2cColorSensor.class,"colorSensor");
 
 
         cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
@@ -148,6 +156,7 @@ public class Map {
         relicTemplate.setName("relicVuMarkTemplate");
 
         relicTrackables.activate();
+        colorSensor.enableLed(true);
 
         vuMark = RelicRecoveryVuMark.from(relicTemplate);
 

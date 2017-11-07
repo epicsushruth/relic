@@ -48,7 +48,7 @@ public class Tele extends OpMode{
         bot.motorLB.setPower(0.6*(aPair-zpow));
 
         double slidePower = -gamepad2.left_stick_y;
-        if(slidePower>0)
+        if(slidePower<0)
         {
             slidePower /= 4;
         }
