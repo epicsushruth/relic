@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.opmode;
 import java.util.ArrayList;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.R;
 import org.firstinspires.ftc.teamcode.base.Color;
 import org.firstinspires.ftc.teamcode.control.Omni;
 
@@ -27,11 +28,7 @@ public abstract class RobotHardware extends OpMode {
         DRIVE_BACK_RIGHT,
     }
 
-    /**
-     * Sets the power of the motor.
-     * @param motor The motor to modify.
-     * @param power The power to set [-1, 1].
-     */
+
     protected void setPower(MotorName motor, double power) {
         DcMotor m = allMotors.get(motor.ordinal());
         if (m == null) {
@@ -41,11 +38,7 @@ public abstract class RobotHardware extends OpMode {
         }
     }
 
-    /**
-     * Sets the drive chain power.
-     * @param left The power for the left two motors.
-     * @param right The power for the right two motors.
-     */
+
     protected void setDriveForTank(double left, double right) {
         setPower(MotorName.DRIVE_FRONT_LEFT, left);
         setPower(MotorName.DRIVE_BACK_LEFT, left);
@@ -53,12 +46,8 @@ public abstract class RobotHardware extends OpMode {
         setPower(MotorName.DRIVE_BACK_RIGHT, right);
     }
 
-    /**
-     * Sets the drive chain power from Mecanum motion.
-     * Maintains relative speeds when changing angles.
-     * @param motion The desired Mecanum motion.
-     */
-    protected void setDriveForMecanum(Omni.Motion motion) {
+
+    protected void setDriveForOmni(Omni.Motion motion) {
         Omni.Wheels wheels = Omni.motionToWheels(motion);
         setPower(MotorName.DRIVE_FRONT_LEFT, wheels.leftFrontPower);
         setPower(MotorName.DRIVE_BACK_LEFT, wheels.rightFrontPower);
@@ -66,12 +55,8 @@ public abstract class RobotHardware extends OpMode {
         setPower(MotorName.DRIVE_BACK_RIGHT, wheels.rightBackPower);
     }
 
-    /**
-     * Sets the drive chain power from Mecanum motion.
-     * Uses max power output while changing speeds at angle motions.
-     * @param motion The desired Mecanum motion.
-     */
-    protected void setDriveForMecanumForSpeed(Omni.Motion motion) {
+
+    protected void setDriveForOmniForSpeed(Omni.Motion motion) {
         Omni.Wheels wheels = Omni.motionToWheels(motion).scaleWheelPower(
                 Math.sqrt(2));
         setPower(MotorName.DRIVE_FRONT_LEFT, wheels.leftFrontPower);
@@ -80,7 +65,7 @@ public abstract class RobotHardware extends OpMode {
         setPower(MotorName.DRIVE_BACK_RIGHT, wheels.rightBackPower);
     }
 
-    // The servos on the robot.
+
     protected enum ServoName {
         JEWEL_DROP,
         JEWEL_HIT,
@@ -204,18 +189,14 @@ public abstract class RobotHardware extends OpMode {
      * Initialize the hardware handles.
      */
     public void init() {
-        vuforiaLicenseKey = hardwareMap.appContext.getResources().getString(
-                R.string.vuforia_key);
-        raisedJewelAngle = hardwareMap.appContext.getResources().getInteger(
-                R.integer.raised_jewel_angle_percent) / 100.0;
-        loweredJewelAngle = hardwareMap.appContext.getResources().getInteger(
-                R.integer.lowered_jewel_angle_percent) / 100.0;
-        centerJewelAngle = hardwareMap.appContext.getResources().getInteger(
-                R.integer.center_jewel_angle_percent) / 100.0;
+        raisedJewelAngle = 1.0;
+        loweredJewelAngle = 0.0;
+        centerJewelAngle = 1.0
         forwardJewelAngle = hardwareMap.appContext.getResources().getInteger(
                 R.integer.forward_jewel_angle_percent) / 100.0;
         backwardJewelAngle = hardwareMap.appContext.getResources().getInteger(
-                R.integer.backward_jewel_angle_percent) / 100.0;
+                R.integer.backward_jewel_angle_percent) / 100.0;vuforiaLicenseKey = hardwareMap.appContext.getResources().getString(
+        */
 
         allMotors = new ArrayList<DcMotor>();
         for (MotorName m : MotorName.values()) {

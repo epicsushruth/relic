@@ -39,8 +39,8 @@ public class Omni {
             double vTheta = motion.vTheta;
 
             thetaD = thetaD*180/Math.PI;
-            double x = Math.cos(thetaD);
-            double y = Math.sin(thetaD);
+            double x = Math.cos(thetaD-Math.PI/4);
+            double y = Math.sin(thetaD-Math.PI/4);
             double z = vTheta;
             Wheels motion2 = new Wheels ((vD*(y+x-z)),(-vD*(y-x+z)),(vD*(y-x-z)),(vD*(y+x+z)));
             return motion2;
@@ -80,12 +80,15 @@ public class Omni {
                                                   double leftStickY,
                                                   double rightStickX,
                                                   double rightStickY) {
-                double vD = Math.min(Math.sqrt(Math.pow(leftStickX, 2) +
-                                Math.pow(leftStickY, 2)),
-                        1);
-                double thetaD = Math.atan2(-leftStickX, leftStickY);
-                double vTheta = -rightStickX;
-                return new Motion(vD, thetaD, vTheta);
+                double xpow = leftStickX;
+                double ypow = leftStickY;
+                double zpow = -rightStickX;
+
+                double vD = Math.sqrt(ypow * ypow + xpow * xpow);
+                double theta = Math.atan2(ypow, xpow);
+
+
+                return new Motion(vD, theta, zpow);
             }
 
     }

@@ -1,8 +1,7 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -35,9 +34,9 @@ public class Tele extends OpMode{
     public void loop() {
 
         //switched the x and z pow
-        xpow = gamepad1.right_stick_x;//direction not actually
+        xpow = gamepad1.left_stick_x;//direction not actually
         ypow = gamepad1.left_stick_y;// variable names are incoorect
-        zpow = gamepad1.left_stick_x;
+        zpow = gamepad1.right_stick_x;
 
         double mag = Math.sqrt(ypow * ypow + xpow * xpow);
         double theta = Math.atan2(ypow, xpow);
@@ -46,14 +45,15 @@ public class Tele extends OpMode{
 
         bot.motorLF.setPower(0.6*(bPair-zpow));
         bot.motorRF.setPower(0.6*(-aPair-zpow));
-        bot.motorRB.setPower(-(0.6*(-bPair-zpow)));
-        bot.motorLB.setPower(-(0.6*(aPair-zpow)));
+        bot.motorRB.setPower((0.6*(-bPair-zpow)));
+        bot.motorLB.setPower((0.6*(aPair-zpow)));
 
         double slidePower = gamepad2.left_stick_y;
-
+        double relicPower = gamepad2.right_stick_y;
         //slidePower = slidePower/4;
 
         bot.slideMotor.setPower(slidePower);
+
 
         if(gamepad2.a)
         {
