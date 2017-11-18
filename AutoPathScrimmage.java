@@ -52,35 +52,37 @@ public class AutoPathScrimmage extends Processor{
         //motorRF,motorLF,motorRB,motorLB
 
         checkCol();
+
+        checkVu();
+
+        bot.glyphServo1.setPosition(0.47);
+        bot.glyphServo2.setPosition(0.429);
+        sleep(1000);
+
+        knockJewel(false);
+
+        //forward(300);
+        // go in front of the cryptograph
+        bot.jewelServo.setPosition(1.0);
+
+        encoderDrive(DRIVE_SPEED,  23,-23,23,-23, 10.0);  // Moves forward
 /*
-        time.reset();
-        while(time.seconds()<1.5) {
-            bot.glyphServo1.setPosition(0.4);
-            bot.glyphServo2.setPosition(0.429);
-        }
-        time.reset();
-        while(time.seconds()<1)
+        turn(-90);
+
+        encoderDrive(.4,5,-5,5,-5,10);
+        bot.runtime.reset();
+        while(bot.runtime.seconds()<2)
         {
-            bot.slideMotor.setPower(-1);
-            bot.slideMotor2.setPower(-1);
+
         }
+        gotoColumnLeft();
+        bot.runtime.reset();
+        while(bot.runtime.seconds()<1)
+        {
+
+        }
+        score();
 */
-        //encoderDrive(0.3,   -22*Math.PI/20, -22*Math.PI/20, -22*Math.PI/20, -22*Math.PI/20, 10.0);
-        //
-        // encoderDrive(0.3,   22*Math.PI/20, 22*Math.PI/20,  22*Math.PI/20, 22*Math.PI/20, 10.0);
-        time.reset();
-        while(time.seconds()<1)
-        {
-
-        }
-
-
-        encoderDrive(DRIVE_SPEED,  15,-15,15,-15, 10.0);  // Moves forward
-        encoderDrive(TURN_SPEED,   -22*Math.PI/5.5, -22*Math.PI/5.5, -22*Math.PI/5.5, -22*Math.PI/5.5, 10.0);
-        gotoColumnRight();
-        encoderDrive(DRIVE_SPEED,15,-15,15,-15,5.0);
-
-
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

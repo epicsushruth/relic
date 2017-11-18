@@ -27,15 +27,17 @@ public class Tele extends OpMode{
     @Override
     public void init() {
         bot.init(hardwareMap);
-        bot.glyphServo1.setPosition(0.75);
-        bot.glyphServo2.setPosition(0.15);
+        bot.glyphServo1.setPosition(0.15);
+        bot.glyphServo2.setPosition(0.75);
     }
 
     @Override
     public void loop() {
-        zpow = gamepad1.right_stick_x;//direction not actually
+
+        //switched the x and z pow
+        xpow = gamepad1.right_stick_x;//direction not actually
         ypow = gamepad1.left_stick_y;// variable names are incoorect
-        xpow = gamepad1.left_stick_x;
+        zpow = gamepad1.left_stick_x;
 
         double mag = Math.sqrt(ypow * ypow + xpow * xpow);
         double theta = Math.atan2(ypow, xpow);
@@ -44,36 +46,48 @@ public class Tele extends OpMode{
 
         bot.motorLF.setPower(0.6*(bPair-zpow));
         bot.motorRF.setPower(0.6*(-aPair-zpow));
-        bot.motorRB.setPower(0.6*(-bPair-zpow));
-        bot.motorLB.setPower(0.6*(aPair-zpow));
+        bot.motorRB.setPower(-(0.6*(-bPair-zpow)));
+        bot.motorLB.setPower(-(0.6*(aPair-zpow)));
 
-        double slidePower = -gamepad2.left_stick_y;
-        if(slidePower<0)
-        {
-            slidePower /= 4;
-        }
+        double slidePower = gamepad2.left_stick_y;
+
+        //slidePower = slidePower/4;
 
         bot.slideMotor.setPower(slidePower);
-        bot.slideMotor2.setPower(slidePower);
 
         if(gamepad2.a)
         {
-            bot.glyphServo1.setPosition(0.47);
-            bot.glyphServo2.setPosition(0.429);
+            bot.glyphServo1.setPosition(0.35);
+            bot.glyphServo2.setPosition(0.5);
+        }
+        if (gamepad2.dpad_down)
+        {
+            bot.glyphServo1.setPosition(1);
+            bot.glyphServo2.setPosition(1);
+        }
+        if (gamepad2.dpad_up)
+        {
+            bot.glyphServo1.setPosition(0);
+            bot.glyphServo2.setPosition(0);
         }
         if(gamepad2.b)
         {
-            bot.glyphServo1.setPosition(0.55);
+            bot.glyphServo1.setPosition(0.5);
         }
         if(gamepad2.x)
         {
-            bot.glyphServo2.setPosition(0.32);
+            bot.glyphServo2.setPosition(0.5);
         }
         if(gamepad2.y)
         {
-            bot.glyphServo1.setPosition(0.55);
-            bot.glyphServo2.setPosition(0.32);
+            bot.glyphServo1.setPosition(0.4);
+            bot.glyphServo2.setPosition(0.33);
         }
+        if(gamepad1.x){
+            bot.jewelServo.setPosition(1.0);
+        }
+        telemetry.addData("motor1Power",bot.slideMotor.getPower());
+
     }
     public void checkVu() {
 

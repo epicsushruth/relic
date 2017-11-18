@@ -75,7 +75,7 @@ public class Map {
     DcMotor motorRF;
     DcMotor motorRB;
     DcMotor slideMotor;
-    DcMotor slideMotor2;
+
 
     Servo glyphServo1;
     Servo glyphServo2;
@@ -115,11 +115,12 @@ public class Map {
         motorRF = hwMap.dcMotor.get("motorRF");
         motorRB = hwMap.dcMotor.get("motorRB");
         slideMotor = hwMap.dcMotor.get("slideMotor");
-        slideMotor2 = hwMap.dcMotor.get("slideMotor2");
+
         //motorLB.setDirection(DcMotor.Direction.REVERSE);
         //^^^^^^^^^^^^^^^^^^^^^^^^^R^RmotorRF.setDirection(DcMotor.Direction.REVERSE);
         glyphServo1 = hwMap.servo.get("glyphServo1");
         glyphServo2 = hwMap.servo.get("glyphServo2");
+        jewelServo = hwMap.servo.get("jewelServo");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
@@ -143,7 +144,6 @@ public class Map {
         motorRF.setDirection(DcMotor.Direction.FORWARD);
         motorLB.setDirection(DcMotor.Direction.FORWARD);
         slideMotor.setDirection(DcMotor.Direction.FORWARD);
-        slideMotor2.setDirection(DcMotor.Direction.REVERSE);
 
 
         param.vuforiaLicenseKey = "AfbM7ND/////AAAAGUXqRoQRDEkKupX0Zkdd3WhqVs68pW5fggxtJc7rlwOAI1WWfs5J4APPWl3FElqMVRdxwlDg3Rcx2DycCogRQGhyOZ6Gakktkgk22k/vy9q8OGLvDvGQQf6zOW3Qrs4hkn2qDWA4r5pDz3W8Aoh97+RCVTiVstECpe1mp97YGrYc5EeyW68aml6lirGr43motonPrXChztqG/3WpqYfFRFIsc+g+leI/ihWuAA1ZUFDYQjRV94GRl66w31kHcGtm+j2BKUlcQsVPmhizh+396O5r4yGkTcLBAZxyuyGm+lerwPJ9DWrkCiwVOtnCVqLUkfAoAjpuXuXEtW4JTlwqYmKVTuVDIg4Wcm7c8vLEBV/4";
@@ -160,7 +160,7 @@ public class Map {
 
         vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
-
+        jewelServo.setPosition(1);
     }
 }
 

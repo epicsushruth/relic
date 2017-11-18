@@ -201,19 +201,23 @@ public abstract class Processor extends LinearOpMode {
     }
 
     public void knockJewel(boolean isTeamRed){
-        bot.jewelServo.setPosition(.7);
+        bot.jewelServo.setPosition(0.0);
+        sleep(2000);
         int toTurn = checkJewel(isTeamRed,isSensorRed());
         turn(toTurn);
+        sleep(1000);
         turn(-toTurn);
+        bot.jewelServo.setPosition(1.0);
+
     }
 
     public  int checkJewel(boolean isTeamRed, boolean isSensorRed){
         if(isTeamRed){
-            if( isTeamRed != isSensorRed){
-                return 15;
+            if( isTeamRed == isSensorRed){
+                return -15;
             }
             else/*isTeamRed != isSensorRed*/{
-                return -15;
+                return 15;
             }
         }
         else{
@@ -227,6 +231,7 @@ public abstract class Processor extends LinearOpMode {
     }
 
     public boolean isSensorRed(){
+        //changed the sign of the sensor
         return  bot.colorSensor.red() > bot.colorSensor.blue();
     }
 
@@ -272,38 +277,38 @@ public abstract class Processor extends LinearOpMode {
             goPulses(3);
         }
         while(bot.runtime.milliseconds() < 1000){
-            bot.motorLF.setPower(DRIVE_SPEED);
-            bot.motorRF.setPower(DRIVE_SPEED);
-            bot.motorRB.setPower(-DRIVE_SPEED);
-            bot.motorLB.setPower(-DRIVE_SPEED);
+            bot.motorLF.setPower(0.2);
+            bot.motorRF.setPower(0.2);
+            bot.motorRB.setPower(-0.2);
+            bot.motorLB.setPower(-0.2);
         }
         bot.runtime.reset();
 
         while(bot.rangeSensor.getDistance(DistanceUnit.CM)>25){
-            bot.motorLF.setPower(-DRIVE_SPEED);
-            bot.motorRF.setPower(-DRIVE_SPEED);
-            bot.motorRB.setPower(DRIVE_SPEED);
-            bot.motorLB.setPower(DRIVE_SPEED);
+            bot.motorLF.setPower(-0.1);
+            bot.motorRF.setPower(-0.1);
+            bot.motorRB.setPower(0.1);
+            bot.motorLB.setPower(0.1);
         }
     }
     public void goPulses(int numOfCol) {
         int count = 0;
         while(count < numOfCol){
 
-            bot.motorLF.setPower(DRIVE_SPEED);
-            bot.motorRF.setPower(DRIVE_SPEED);
-            bot.motorRB.setPower(-DRIVE_SPEED);
-            bot.motorLB.setPower(-DRIVE_SPEED);
+            bot.motorLF.setPower(0.3);
+            bot.motorRF.setPower(0.3);
+            bot.motorRB.setPower(-0.3);
+            bot.motorLB.setPower(-0.3);
 
             if (bot.rangeSensor.getDistance(DistanceUnit.CM)<25) {
                 count++;
                 bot.runtime.reset();
 
                 while(bot.runtime.milliseconds() < 1000){
-                    bot.motorLF.setPower(DRIVE_SPEED);
-                    bot.motorRF.setPower(DRIVE_SPEED);
-                    bot.motorRB.setPower(-DRIVE_SPEED);
-                    bot.motorLB.setPower(-DRIVE_SPEED);
+                    bot.motorLF.setPower(0.3);
+                    bot.motorRF.setPower(0.3);
+                    bot.motorRB.setPower(-0.3);
+                    bot.motorLB.setPower(-0.3);
                 }
                 bot.runtime.reset();
                 // clear the column so the same colmn is not counted three time
