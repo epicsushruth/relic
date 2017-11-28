@@ -160,7 +160,8 @@ public class Map {
 
         vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
-        jewelServo.setPosition(1);
+        jewelServo.setPosition(1.0);
+
     }
 }
 

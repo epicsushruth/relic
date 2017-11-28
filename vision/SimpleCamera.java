@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.vision;
 
 import java.io.File;
 import java.io.FileOutputStream;
+
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Looper;
 import android.os.Handler;
 import android.os.Environment;
@@ -46,6 +49,7 @@ public class SimpleCamera implements Camera.PreviewCallback, Camera.PictureCallb
      * Initializes the phone's camera.
      * Attempts to get the first camera, which should be the back camera.
      */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public SimpleCamera(final Context context) {
         this.context = context;
         takingPicture = false;

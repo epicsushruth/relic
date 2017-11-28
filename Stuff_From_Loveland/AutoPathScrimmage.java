@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+
 /**
  * Created by Sushr on 10/28/2017.
  */
@@ -47,25 +49,25 @@ public class AutoPathScrimmage extends Processor{
 
         waitForStart();
 
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        //motorRF,motorLF,motorRB,motorLB
 
-        checkCol();
-
-        checkVu();
-
-        bot.glyphServo1.setPosition(0.47);
+        RelicRecoveryVuMark column = detectMark();
+        /*bot.glyphServo1.setPosition(0.47);
         bot.glyphServo2.setPosition(0.429);
         sleep(1000);
 
         knockJewel(false);
+        sleep(2000);
 
         //forward(300);
         // go in front of the cryptograph
         bot.jewelServo.setPosition(1.0);
+        sleep(2000);
 
-        encoderDrive(DRIVE_SPEED,  23,-23,23,-23, 10.0);  // Moves forward
+        encoderDrive(DRIVE_SPEED,  15,15,-15,-15, 10.0);  // Moves forward
+        sleep(1000);
+        turn(-180);*/
+        sleep(3000);
+        driveToColumnBlue(/*columnNumberBlue(column)*/2);
 /*
         turn(-90);
 
@@ -87,4 +89,5 @@ public class AutoPathScrimmage extends Processor{
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
+
 }

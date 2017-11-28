@@ -114,6 +114,10 @@ public abstract class Processor extends LinearOpMode {
             sleep(250);   // optional pause after each move
         }
     }
+    public RelicRecoveryVuMark detectMark() {
+        return RelicRecoveryVuMark.from(bot.relicTemplate);
+    }
+
     public void checkVu() {
 
         /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
@@ -231,6 +235,82 @@ public abstract class Processor extends LinearOpMode {
             bot.motorRF.setPower(DRIVE_SPEED);
             bot.motorRB.setPower(-DRIVE_SPEED);
             bot.motorLB.setPower(-DRIVE_SPEED);
+        }
+    }
+    public int columnNumberRed(RelicRecoveryVuMark s)
+    {
+        int accumulator = 0;
+        if(s == RelicRecoveryVuMark.RIGHT)
+        {
+            accumulator = 1;
+        }
+         else if(s == RelicRecoveryVuMark.CENTER)
+        {
+            accumulator = 2;
+        }
+        else if(s == RelicRecoveryVuMark.LEFT)
+        {
+            accumulator = 3;
+        }
+        else
+        {
+            accumulator = 2;
+        }
+        return accumulator;
+    }
+    public void driveToColumnRed(int column)
+    {
+        int count = 0;
+        while(count != column)
+        {
+            if(bot.rangeSensor.getDistance(DistanceUnit.CM)<25)
+            {
+                count++;
+            }
+            bot.motorLB.setPower(-0.1);
+            bot.motorLF.setPower(0.1);
+            bot.motorRB.setPower(-0.1);
+            bot.motorRF.setPower(0.1);
+        }
+    }
+    public int columnNumberBlue(RelicRecoveryVuMark s)
+    {
+        int accumulator = 0;
+        if(s == RelicRecoveryVuMark.LEFT)
+        {
+            accumulator = 1;
+        }
+        else if(s == RelicRecoveryVuMark.CENTER)
+        {
+            accumulator = 2;
+        }
+        else if(s == RelicRecoveryVuMark.RIGHT)
+        {
+            accumulator = 3;
+        }
+        else
+        {
+            accumulator = 2;
+        }
+        return accumulator;
+    }
+    public void driveToColumnBlue(int column)
+    {
+        int count = 0;
+        while(count != column)
+        {
+            if(bot.rangeSensor.getDistance(DistanceUnit.CM)<2)
+            {
+                count++;
+            }
+            bot.motorLB.setPower(0.1);
+            bot.motorLF.setPower(-0.1);
+            bot.motorRB.setPower(0.1);
+            bot.motorRF.setPower(-0.1);
+            if(count == column)
+            {
+                break;
+            }
         }
     }
     public void gotoColumnLeft() {// the direction approating the cyrpoto box changes depending on the side
