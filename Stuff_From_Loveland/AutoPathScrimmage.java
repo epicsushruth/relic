@@ -50,7 +50,7 @@ public class AutoPathScrimmage extends Processor{
         waitForStart();
 
 
-        RelicRecoveryVuMark column = detectMark();
+        //RelicRecoveryVuMark column = detectMark();
         /*bot.glyphServo1.setPosition(0.47);
         bot.glyphServo2.setPosition(0.429);
         sleep(1000);
@@ -67,7 +67,7 @@ public class AutoPathScrimmage extends Processor{
         sleep(1000);
         turn(-180);*/
         sleep(3000);
-        driveToColumnBlue(/*columnNumberBlue(column)*/2);
+        //driveToColumnBlue(/*columnNumberBlue(column)*/2);
 /*
         turn(-90);
 

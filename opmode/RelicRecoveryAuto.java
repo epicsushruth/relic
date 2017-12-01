@@ -10,43 +10,45 @@ import org.firstinspires.ftc.teamcode.vision.SimpleVuforia;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.robot.Robot;
+
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
 public class RelicRecoveryAuto extends RobotHardware {
 
-    @Autonomous(name="Red.Center", group="pmtischler")
+    @Autonomous(name="Red.Parallel", group="pmtischler")
     public static class RelicRecoveryAutoRedCenter extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.RED;
-            robotStartPos = StartPosition.FIELD_CENTER;
+            robotStartPos = StartPosition.FIELD_PARALLEL;
             super.init();
         }
     }
 
-    @Autonomous(name="Red.Corner", group="pmtischler")
+    @Autonomous(name="Red.Perpendicular", group="pmtischler")
     public static class RelicRecoveryAutoRedCorner extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.RED;
-            robotStartPos = StartPosition.FIELD_CORNER;
+            robotStartPos = StartPosition.FIELD_PEREPENDICULAR;
             super.init();
         }
     }
 
-    @Autonomous(name="Blue.Center", group="pmtischler")
+    @Autonomous(name="Blue.Parallel", group="pmtischler")
     public static class RelicRecoveryAutoBlueCenter extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.BLUE;
-            robotStartPos = StartPosition.FIELD_CENTER;
+            robotStartPos = StartPosition.FIELD_PARALLEL;
             super.init();
         }
     }
 
-    @Autonomous(name="Blue.Corner", group="pmtischler")
+    @Autonomous(name="Blue.Perpendicular", group="pmtischler")
     public static class RelicRecoveryAutoBlueCorner extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.BLUE;
-            robotStartPos = StartPosition.FIELD_CORNER;
+            robotStartPos = StartPosition.FIELD_PEREPENDICULAR;
             super.init();
         }
     }
@@ -152,7 +154,7 @@ public class RelicRecoveryAuto extends RobotHardware {
 
         @Override
         public State update() {
-            setColorSensorLedEnabled(ColorSensorName.JEWEL, true);
+            setColorSensorLedEnabled(ColorSensorName.colorSensor, true);
             lowerJewelArm();
             return new WaitForDuration(2, next);
         }
@@ -171,20 +173,21 @@ public class RelicRecoveryAuto extends RobotHardware {
 
         @Override
         public State update() {
-            int r = getColorSensor(ColorSensorName.JEWEL,
+            int r = getColorSensor(ColorSensorName.colorSensor,
                     Color.Channel.RED);
-            int b = getColorSensor(ColorSensorName.JEWEL,
+            int b = getColorSensor(ColorSensorName.colorSensor,
                     Color.Channel.BLUE);
 
             if ((r > b && robotColor == Color.Ftc.BLUE) ||
                     (b > r && robotColor == Color.Ftc.RED)) {
                 // Reading other team's jewel in forward position.
-                forwardJewelArm();
+
+                turn(15, new Omni.TurnSpeed(getAngularOrientation().firstAngle,15));
             } else {
                 // Reading our team's jewel in forward position.
-                backwardJewelArm();
+                turn(15,new Omni.TurnSpeed(getAngularOrientation().firstAngle,15));
             }
-            setColorSensorLedEnabled(ColorSensorName.JEWEL, false);
+            setColorSensorLedEnabled(ColorSensorName.colorSensor, false);
             return new WaitForDuration(1, next);
         }
 
@@ -203,7 +206,6 @@ public class RelicRecoveryAuto extends RobotHardware {
         @Override
         public State update() {
             raiseJewelArm();
-            centerJewelArm();
             return new WaitForDuration(1, next);
         }
 
@@ -251,7 +253,7 @@ public class RelicRecoveryAuto extends RobotHardware {
     private StateMachine.State newDriveToCryptobox(StateMachine.State next) {
         StateMachine.State turnToFace;
         if (robotColor == Color.Ftc.RED) {
-            if (robotStartPos == StartPosition.FIELD_CENTER) {
+            if (robotStartPos == StartPosition.FIELD_PARALLEL) {
                 // Red center does not turn.
                 turnToFace = next;
             } else {
@@ -261,7 +263,7 @@ public class RelicRecoveryAuto extends RobotHardware {
                         turnTowardSec, next);
             }
         } else {
-            if (robotStartPos == StartPosition.FIELD_CENTER) {
+            if (robotStartPos == StartPosition.FIELD_PARALLEL) {
                 // Blue center turns around.
                 turnToFace = new DriveForTime(
                         new Omni.Motion(0, 0, 0.5),

@@ -24,13 +24,6 @@ public class RelicRecoveryManual extends RobotHardware {
             lowerJewelArm();
         }
 
-        if (gamepad1.dpad_right) {
-            forwardJewelArm();
-        } else if (gamepad1.dpad_left) {
-            backwardJewelArm();
-        } else {
-            centerJewelArm();
-        }
     }
 }
 

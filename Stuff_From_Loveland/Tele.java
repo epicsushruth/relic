@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -11,13 +12,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.teamcode.Stuff_From_Loveland.TeleMap;
 
-/**
- * Created by wolfie on 9/15/17.
- */
-@TeleOp(name = "XbadTele", group = "X")
+@TeleOp(name = "XTele", group = "X")
 public class Tele extends OpMode{
-    Map bot = new Map();
+    TeleMap bot = new TeleMap();
     double xpow;
     double ypow;
     double zpow;
@@ -26,106 +25,119 @@ public class Tele extends OpMode{
     @Override
     public void init() {
         bot.init(hardwareMap);
-        bot.glyphServo1.setPosition(0.15);
-        bot.glyphServo2.setPosition(0.75);
+
+    }
+
+    public void readGamePad() {
+        zpow = gamepad1.right_stick_x;//direction not actually
+        ypow = gamepad1.left_stick_y;// variable names are incoorect
+        xpow = gamepad1.left_stick_x;
+        if(Math.abs(ypow)<.05){
+            ypow = 0;
+
+        }
+        if(Math.abs(xpow)<.05){
+            xpow = 0;
+
+        }
     }
 
     @Override
     public void loop() {
 
-        //switched the x and z pow
-        xpow = gamepad1.left_stick_x;//direction not actually
-        ypow = gamepad1.left_stick_y;// variable names are incoorect
-        zpow = gamepad1.right_stick_x;
-
+        readGamePad();
         double mag = Math.sqrt(ypow * ypow + xpow * xpow);
         double theta = Math.atan2(ypow, xpow);
         double aPair = mag * Math.cos(theta - Math.PI/4);
         double bPair = mag * Math.sin(theta - Math.PI/4);
 
-        bot.motorLF.setPower(0.6*(bPair-zpow));
-        bot.motorRF.setPower(0.6*(-aPair-zpow));
-        bot.motorRB.setPower((0.6*(-bPair-zpow)));
-        bot.motorLB.setPower((0.6*(aPair-zpow)));
 
-        double slidePower = gamepad2.left_stick_y;
-        double relicPower = gamepad2.right_stick_y;
-        //slidePower = slidePower/4;
 
+        bot.motorLF.setPower(.8*(bPair-zpow));
+        bot.motorRF.setPower(.8*(-aPair-zpow));
+        bot.motorRB.setPower(.8*(-bPair-zpow));
+        bot.motorLB.setPower(.8*(aPair-zpow));
+
+        double slidePower = -gamepad2.left_stick_y;
+        if(slidePower>0)
+        {
+            slidePower /= 4;
+        }
         bot.slideMotor.setPower(slidePower);
 
 
-        if(gamepad2.a)
+
+        double relicPower = gamepad2.right_stick_y;
+        bot.relicMotor.setPower(relicPower);
+
+        if(gamepad2.a)  // gripGlyphs
         {
-            bot.glyphServo1.setPosition(0.35);
-            bot.glyphServo2.setPosition(0.5);
+            gripGlyph();
         }
-        if (gamepad2.dpad_down)
+        if(gamepad2.x)  // openLeft
         {
-            bot.glyphServo1.setPosition(1);
-            bot.glyphServo2.setPosition(1);
+            openRight();
+            bot.glyphServo2.setPosition(.42);
         }
-        if (gamepad2.dpad_up)
+        if(gamepad2.b)  // openRight
         {
-            bot.glyphServo1.setPosition(0);
-            bot.glyphServo2.setPosition(0);
+            bot.glyphServo2.setPosition(.8);
+
+            bot.glyphServo1.setPosition(.2);
         }
-        if(gamepad2.b)
+        if(gamepad2.y) // releaseGlyphs
         {
-            bot.glyphServo1.setPosition(0.5);
+            realeaseGlyph();
         }
-        if(gamepad2.x)
-        {
-            bot.glyphServo2.setPosition(0.5);
+        if(gamepad2.dpad_left){
+            fingersClose();  // fingers closed for relic
         }
-        if(gamepad2.y)
-        {
-            bot.glyphServo1.setPosition(0.4);
-            bot.glyphServo2.setPosition(0.33);
+        if(gamepad2.dpad_right){
+            fingersOpen(); // opens finger servo for relic
         }
-        if(gamepad1.x){
-            bot.jewelServo.setPosition(1.0);
+        if(gamepad2.dpad_up){
+            wristUp();   // brings wrist up for relic
         }
-        telemetry.addData("motor1Power",bot.slideMotor.getPower());
+        if(gamepad2.dpad_down){
+            wristDown(); // bring wrist down for relic
+        }
+
 
     }
-    public void checkVu() {
 
-        /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
-        * it is perhaps unlikely that you will actually need to act on this pose information, but
-        * we illustrate it nevertheless, for completeness. */
-        OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) bot.relicTemplate.getListener()).getPose();
-        telemetry.addData("Pose", format(pose));
-
-                /* We further illustrate how to decompose the pose into useful rotational and
-                 * translational components */
-        if (pose != null) {
-            VectorF trans = pose.getTranslation();
-            Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-
-            // Extract the X, Y, and Z components of the offset of the target relative to the robot
-            bot.tX = trans.get(0);
-            bot.tY = trans.get(1);
-            bot.tZ = trans.get(2);
-
-            // X = vertical axis
-            // Y = horizonatal Axis
-            // Z = Depth Axis
-            // Extract the rotational components of the target relative to the robot
-            bot.rX = rot.firstAngle;
-            bot.rY = rot.secondAngle;
-            bot.rZ = rot.thirdAngle;
-        }
-        else {
-            telemetry.addData("VuMark", "not visible");
-        }
-        bot.vuMark = RelicRecoveryVuMark.from(bot.relicTemplate);
-        telemetry.addData("Z", bot.tZ);
-        telemetry.addData("X", bot.tX);
-        telemetry.update();
+    public void fingersOpen(){
+        bot.relicFingers.setPosition(.6);
     }
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
+
+    public void fingersClose(){
+        bot.relicFingers.setPosition(.95);
     }
+
+    public void wristUp() {
+        bot.relicWrist.setPosition(.7);
+    }
+
+    public void wristDown() {
+        bot.relicWrist.setPosition(0);
+    }
+    public void gripGlyph() {
+        bot.glyphServo1.setPosition(0.69);
+        bot.glyphServo2.setPosition(0.35);
+    }
+
+    public void openRight() {
+        bot.glyphServo1.setPosition(0.53);
+    }
+
+    public void openLeft() {
+        bot.glyphServo2.setPosition(0.5);
+
+    }
+
+    public void realeaseGlyph() {
+        openLeft();
+        openRight();
+    }
+
 
 }

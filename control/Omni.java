@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.control;
 
+import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +13,12 @@ import java.util.List;
  */
 
 public class Omni {
+
+    static final double P_TURN_COEFF = .2;
+    public final static int DIAMETEROFWHEEL = 4;
+    static final double TURN_SPEED = 0.3;
+    static final double DRIVE_SPEED = 0.6;
+    static final double HEADING_THRESHOLD = 2;
 
     public static class Wheels {
         public final double leftBackPower;
@@ -55,6 +65,37 @@ public class Omni {
                 for (int i = 0; i < powers.size(); i++) {
                     powers.set(i, powers.get(i) / maxMag);
                 }
+            }
+        }
+
+        public static class TurnSpeed{
+
+
+            double error;
+            public TurnSpeed(double first,double wanted)
+            {
+                error = wanted - first;
+            }
+
+            public double turning(double firstAngle, double angleWanted) {
+                double correction;
+                double speed;
+                while (error > 180)
+                    error -= 360;
+                while (error < -180)
+                    error += 360;
+
+                correction = Range.clip( error * P_TURN_COEFF,-1,1);
+
+
+
+                if(Math.abs(error) <= HEADING_THRESHOLD){
+                    return 0;
+                }
+                else{
+                    speed = TURN_SPEED * correction;
+                }
+                return speed;
             }
         }
 

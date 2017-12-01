@@ -1,16 +1,26 @@
 package org.firstinspires.ftc.teamcode.opmode;
-import java.util.ArrayList;
+import android.provider.ContactsContract;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
+
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.R;
 import org.firstinspires.ftc.teamcode.base.Color;
 import org.firstinspires.ftc.teamcode.control.Omni;
+
+import static org.firstinspires.ftc.teamcode.opmode.RobotHardware.ImuName.imu;
 
 
 /**
@@ -26,6 +36,10 @@ public abstract class RobotHardware extends OpMode {
         DRIVE_FRONT_RIGHT,
         DRIVE_BACK_LEFT,
         DRIVE_BACK_RIGHT,
+    }
+
+    public enum ImuName {
+        imu
     }
 
 
@@ -54,7 +68,36 @@ public abstract class RobotHardware extends OpMode {
         setPower(MotorName.DRIVE_FRONT_RIGHT, wheels.leftBackPower);
         setPower(MotorName.DRIVE_BACK_RIGHT, wheels.rightBackPower);
     }
+    protected void accelerate(double speed) {
+        double clip_speed = Range.clip(speed, -1, 1);
+        setPower(MotorName.DRIVE_FRONT_LEFT, clip_speed);
+        setPower(MotorName.DRIVE_BACK_LEFT, clip_speed);
+        setPower(MotorName.DRIVE_FRONT_RIGHT, clip_speed);
+        setPower(MotorName.DRIVE_BACK_RIGHT, clip_speed);
+    }
+    protected Orientation getAngularOrientation()
+    {
+        Orientation ret = allImuSensors.get(0).getAngularOrientation();
+        return ret;
+    }
 
+    protected void turn(double target, Omni.TurnSpeed speed) {
+        Orientation ref = allImuSensors.get(0).getAngularOrientation();
+        double heading = ref.firstAngle;
+        double angleWanted = target+heading;
+
+        double turnSpeed = speed.turning(ref.firstAngle,angleWanted);
+        double correction;
+        double error;
+
+        ref = allImuSensors.get(0).getAngularOrientation();
+        while(turnSpeed != 0 ){
+            ref = allImuSensors.get(0).getAngularOrientation();
+            turnSpeed = speed.turning(ref.firstAngle, angleWanted);
+            accelerate(turnSpeed);
+        }
+        accelerate(0);
+    }
 
     protected void setDriveForOmniForSpeed(Omni.Motion motion) {
         Omni.Wheels wheels = Omni.motionToWheels(motion).scaleWheelPower(
@@ -67,8 +110,8 @@ public abstract class RobotHardware extends OpMode {
 
 
     protected enum ServoName {
-        JEWEL_DROP,
-        JEWEL_HIT,
+        jewelServo,
+        //JEWEL_HIT,
     }
 
     /**
@@ -87,15 +130,16 @@ public abstract class RobotHardware extends OpMode {
 
     // Raises the jewel arm.
     protected void raiseJewelArm() {
-        setAngle(ServoName.JEWEL_DROP, raisedJewelAngle);
+        setAngle(ServoName.jewelServo, raisedJewelAngle);
     }
 
     // Lowers the jewel arm.
     protected void lowerJewelArm() {
-        setAngle(ServoName.JEWEL_DROP, loweredJewelAngle);
+        setAngle(ServoName.jewelServo, loweredJewelAngle);
     }
 
     // Centers the jewel arm.
+    /*
     protected void centerJewelArm() {
         setAngle(ServoName.JEWEL_HIT, centerJewelAngle);
     }
@@ -109,10 +153,10 @@ public abstract class RobotHardware extends OpMode {
     protected void backwardJewelArm() {
         setAngle(ServoName.JEWEL_HIT, backwardJewelAngle);
     }
-
+*/
     // The color sensors on the robot.
     protected enum ColorSensorName {
-        JEWEL,
+        colorSensor
     }
 
     /**
@@ -174,8 +218,8 @@ public abstract class RobotHardware extends OpMode {
 
     // Possible starting positions.
     protected enum StartPosition {
-        FIELD_CENTER,
-        FIELD_CORNER,
+        FIELD_PARALLEL,
+        FIELD_PEREPENDICULAR,
     }
 
     /**
@@ -189,11 +233,9 @@ public abstract class RobotHardware extends OpMode {
      * Initialize the hardware handles.
      */
     public void init() {
-        raisedJewelAngle = 1.0;
-        loweredJewelAngle = 0.0;
-        centerJewelAngle = 1.0;
-        forwardJewelAngle = 0.3;
-        backwardJewelAngle = 0.7;
+        raisedJewelAngle = 0.2;
+        loweredJewelAngle = 0.9;
+
         vuforiaLicenseKey = "AfbM7ND/////AAAAGUXqRoQRDEkKupX0Zkdd3WhqVs68pW5fggxtJc7rlwOAI1WWfs5J4APPWl3FElqMVRdxwlDg3Rcx2DycCogRQGhyOZ6Gakktkgk22k/vy9q8OGLvDvGQQf6zOW3Qrs4hkn2qDWA4r5pDz3W8Aoh97+RCVTiVstECpe1mp97YGrYc5EeyW68aml6lirGr43motonPrXChztqG/3WpqYfFRFIsc+g+leI/ihWuAA1ZUFDYQjRV94GRl66w31kHcGtm+j2BKUlcQsVPmhizh+396O5r4yGkTcLBAZxyuyGm+lerwPJ9DWrkCiwVOtnCVqLUkfAoAjpuXuXEtW4JTlwqYmKVTuVDIg4Wcm7c8vLEBV/4";
         allMotors = new ArrayList<DcMotor>();
         for (MotorName m : MotorName.values()) {
@@ -238,8 +280,28 @@ public abstract class RobotHardware extends OpMode {
             }
         }
 
+        allImuSensors = new ArrayList<BNO055IMU>();
+        for (ImuName s : ImuName.values()) {
+            try {
+                allImuSensors.add(hardwareMap.get(BNO055IMU.class, s.name()));
+                BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+                parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+                parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+                parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+                parameters.loggingEnabled = true;
+                parameters.loggingTag = "IMU";
+                parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+                allImuSensors.get(0).initialize(parameters);
+
+            } catch (Exception e) {
+                telemetry.addData("Imu Sensor Missing", s.name());
+                allImuSensors.add(null);
+            }
+        }
+
         raiseJewelArm();
-        centerJewelArm();
+
     }
 
     /**
@@ -264,6 +326,8 @@ public abstract class RobotHardware extends OpMode {
     private ArrayList<ColorSensor> allColorSensors;
     // All distance sensors on the robot, in order of DistanceSensorName.
     private ArrayList<DistanceSensor> allDistanceSensors;
+    // All IMU sensors on the robot, in order of ImuSensorName
+    private List<BNO055IMU> allImuSensors;
 
     // Per robot tuning parameters.
     private String vuforiaLicenseKey;
