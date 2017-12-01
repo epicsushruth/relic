@@ -24,18 +24,22 @@ public class Tele extends OpMode{
 
     @Override
     public void init() {
+        //initalizes hardware map
         bot.init(hardwareMap);
-
     }
 
     public void readGamePad() {
-        zpow = gamepad1.right_stick_x;//direction not actually
-        ypow = gamepad1.left_stick_y;// variable names are incoorect
+        //assigns joystick values to variables
+        zpow = gamepad1.right_stick_x;
+        ypow = gamepad1.left_stick_y;
         xpow = gamepad1.left_stick_x;
+
+        //creates a deadzone for left stick y
         if(Math.abs(ypow)<.05){
             ypow = 0;
 
         }
+        //creates a deadzone for left stick x
         if(Math.abs(xpow)<.05){
             xpow = 0;
 
@@ -45,6 +49,7 @@ public class Tele extends OpMode{
     @Override
     public void loop() {
 
+        //takes the joystick values and converts to motor speeds through holonomic calculations
         readGamePad();
         double mag = Math.sqrt(ypow * ypow + xpow * xpow);
         double theta = Math.atan2(ypow, xpow);
@@ -52,29 +57,35 @@ public class Tele extends OpMode{
         double bPair = mag * Math.sin(theta - Math.PI/4);
 
 
-
+        //sets movement speeds for motors to move correctly based on joystick input
+        //runs at .8 speed to provide driver assisting controls
         bot.motorLF.setPower(.8*(bPair-zpow));
         bot.motorRF.setPower(.8*(-aPair-zpow));
         bot.motorRB.setPower(.8*(-bPair-zpow));
         bot.motorLB.setPower(.8*(aPair-zpow));
 
+        //assings the joystick value to another variable
         double slidePower = -gamepad2.left_stick_y;
+
         if(slidePower>0)
         {
+            //scales the slidepower to move at a quarter speed
             slidePower /= 4;
         }
         bot.slideMotor.setPower(slidePower);
 
 
-
+        //assigns the value of the joystick to a variable
         double relicPower = gamepad2.right_stick_y;
+
+        //sets the variable value to move the motor at the specified speed
         bot.relicMotor.setPower(relicPower);
 
-        if(gamepad2.a)  // gripGlyphs
+        if(gamepad2.a)  //closes the servos to hold the glyph
         {
             gripGlyph();
         }
-        if(gamepad2.x)  // openLeft
+        if(gamepad2.x)  //opens the right servo
         {
             openRight();
             bot.glyphServo2.setPosition(.42);
@@ -85,7 +96,7 @@ public class Tele extends OpMode{
 
             bot.glyphServo1.setPosition(.2);
         }
-        if(gamepad2.y) // releaseGlyphs
+        if(gamepad2.y) //releases the glyph from the servos
         {
             realeaseGlyph();
         }

@@ -32,10 +32,10 @@ import static org.firstinspires.ftc.teamcode.opmode.RobotHardware.ImuName.imu;
 public abstract class RobotHardware extends OpMode {
     // The motors on the robot.
     public enum MotorName {
-        DRIVE_FRONT_LEFT,
-        DRIVE_FRONT_RIGHT,
-        DRIVE_BACK_LEFT,
-        DRIVE_BACK_RIGHT,
+        leftFront,
+        rightFront,
+        leftBack,
+        rightBack,
     }
 
     public enum ImuName {
@@ -54,26 +54,26 @@ public abstract class RobotHardware extends OpMode {
 
 
     protected void setDriveForTank(double left, double right) {
-        setPower(MotorName.DRIVE_FRONT_LEFT, left);
-        setPower(MotorName.DRIVE_BACK_LEFT, left);
-        setPower(MotorName.DRIVE_FRONT_RIGHT, right);
-        setPower(MotorName.DRIVE_BACK_RIGHT, right);
+        setPower(MotorName.leftFront, left);
+        setPower(MotorName.leftBack, left);
+        setPower(MotorName.rightFront, right);
+        setPower(MotorName.rightBack, right);
     }
 
 
     protected void setDriveForOmni(Omni.Motion motion) {
         Omni.Wheels wheels = Omni.motionToWheels(motion);
-        setPower(MotorName.DRIVE_FRONT_LEFT, wheels.leftFrontPower);
-        setPower(MotorName.DRIVE_BACK_LEFT, wheels.rightFrontPower);
-        setPower(MotorName.DRIVE_FRONT_RIGHT, wheels.leftBackPower);
-        setPower(MotorName.DRIVE_BACK_RIGHT, wheels.rightBackPower);
+        setPower(MotorName.leftFront, wheels.leftFrontPower);
+        setPower(MotorName.leftBack, wheels.rightFrontPower);
+        setPower(MotorName.rightFront, wheels.leftBackPower);
+        setPower(MotorName.rightBack, wheels.rightBackPower);
     }
     protected void accelerate(double speed) {
         double clip_speed = Range.clip(speed, -1, 1);
-        setPower(MotorName.DRIVE_FRONT_LEFT, clip_speed);
-        setPower(MotorName.DRIVE_BACK_LEFT, clip_speed);
-        setPower(MotorName.DRIVE_FRONT_RIGHT, clip_speed);
-        setPower(MotorName.DRIVE_BACK_RIGHT, clip_speed);
+        setPower(MotorName.leftFront, clip_speed);
+        setPower(MotorName.leftBack, clip_speed);
+        setPower(MotorName.rightFront, clip_speed);
+        setPower(MotorName.rightBack, clip_speed);
     }
     protected Orientation getAngularOrientation()
     {
@@ -102,10 +102,10 @@ public abstract class RobotHardware extends OpMode {
     protected void setDriveForOmniForSpeed(Omni.Motion motion) {
         Omni.Wheels wheels = Omni.motionToWheels(motion).scaleWheelPower(
                 Math.sqrt(2));
-        setPower(MotorName.DRIVE_FRONT_LEFT, wheels.leftFrontPower);
-        setPower(MotorName.DRIVE_BACK_LEFT, wheels.rightFrontPower);
-        setPower(MotorName.DRIVE_FRONT_RIGHT, wheels.leftBackPower);
-        setPower(MotorName.DRIVE_BACK_RIGHT, wheels.rightBackPower);
+        setPower(MotorName.leftFront, wheels.leftFrontPower);
+        setPower(MotorName.leftBack, wheels.rightFrontPower);
+        setPower(MotorName.rightFront, wheels.leftBackPower);
+        setPower(MotorName.rightBack, wheels.rightBackPower);
     }
 
 
