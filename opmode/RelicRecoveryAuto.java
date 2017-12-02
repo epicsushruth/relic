@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
-import org.firstinspires.ftc.teamcode.R;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.base.Color;
 import org.firstinspires.ftc.teamcode.base.StateMachine;
 import org.firstinspires.ftc.teamcode.base.StateMachine.State;
@@ -8,47 +10,45 @@ import org.firstinspires.ftc.teamcode.control.Omni;
 import org.firstinspires.ftc.teamcode.control.Pid;
 import org.firstinspires.ftc.teamcode.vision.SimpleVuforia;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.robot.Robot;
-
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-
 
 public class RelicRecoveryAuto extends RobotHardware {
 
-    @Autonomous(name="Red.Parallel", group="pmtischler")
+    @Autonomous(name="Red.Parallel dont use", group="pmtischler")
     public static class RelicRecoveryAutoRedCenter extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.RED;
             robotStartPos = StartPosition.FIELD_PARALLEL;
+            turnAngleToCryptobox = 180;
             super.init();
         }
     }
 
-    @Autonomous(name="Red.Perpendicular", group="pmtischler")
+    @Autonomous(name="Red.Perpendicular Dont use", group="pmtischler")
     public static class RelicRecoveryAutoRedCorner extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.RED;
             robotStartPos = StartPosition.FIELD_PEREPENDICULAR;
+            turnAngleToCryptobox = -90;
             super.init();
         }
     }
 
-    @Autonomous(name="Blue.Parallel", group="pmtischler")
+    @Autonomous(name="Blue.Parallel dont use", group="pmtischler")
     public static class RelicRecoveryAutoBlueCenter extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.BLUE;
             robotStartPos = StartPosition.FIELD_PARALLEL;
+            turnAngleToCryptobox = 180;
             super.init();
         }
     }
 
-    @Autonomous(name="Blue.Perpendicular", group="pmtischler")
+    @Autonomous(name="Blue.Perpendicular dont use", group="pmtischler")
     public static class RelicRecoveryAutoBlueCorner extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.BLUE;
             robotStartPos = StartPosition.FIELD_PEREPENDICULAR;
+            turnAngleToCryptobox = 90;
             super.init();
         }
     }
@@ -187,10 +187,30 @@ public class RelicRecoveryAuto extends RobotHardware {
                 // Reading our team's jewel in forward position.
                 turn(15,new Omni.TurnSpeed(getAngularOrientation().firstAngle,15));
             }
-            setColorSensorLedEnabled(ColorSensorName.colorSensor, false);
+            setColorSensorLedEnabled(ColorSensorName.colorSensor, true);
             return new WaitForDuration(1, next);
         }
 
+        private StateMachine.State next;
+    }
+    private class TurnToCryptobox implements StateMachine.State
+    {
+        public TurnToCryptobox(StateMachine.State next)
+        {
+            this.next = next;
+        }
+
+        @Override
+        public void start()
+        {
+
+        }
+        @Override
+        public State update()
+        {
+            turn(turnAngleToCryptobox, new Omni.TurnSpeed(getAngularOrientation().firstAngle,turnAngleToCryptobox));
+            return new WaitForDuration(1, next);
+        }
         private StateMachine.State next;
     }
 
@@ -255,24 +275,21 @@ public class RelicRecoveryAuto extends RobotHardware {
         if (robotColor == Color.Ftc.RED) {
             if (robotStartPos == StartPosition.FIELD_PARALLEL) {
                 // Red center does not turn.
-                turnToFace = next;
+                turnToFace = new TurnToCryptobox(next);
             } else {
                 // Red corner turns right.
-                turnToFace = new DriveForTime(
-                        new Omni.Motion(0, 0, -0.5),
-                        turnTowardSec, next);
+                turnToFace = new TurnToCryptobox(next);
+
             }
         } else {
             if (robotStartPos == StartPosition.FIELD_PARALLEL) {
                 // Blue center turns around.
-                turnToFace = new DriveForTime(
-                        new Omni.Motion(0, 0, 0.5),
-                        turnTowardSec * 2, next);
+                turnToFace = new TurnToCryptobox(next);
+
             } else {
                 // Blue corner turns right.
-                turnToFace = new DriveForTime(
-                        new Omni.Motion(0, 0, -0.5),
-                        turnTowardSec, next);
+                turnToFace = new TurnToCryptobox(next);
+
             }
         }
 
@@ -298,9 +315,9 @@ public class RelicRecoveryAuto extends RobotHardware {
             targetFrontDistCm = cryptoFrontDistCm;
             targetSideDistCm = cryptoSideDistCm;
             if (robotColor == Color.Ftc.RED) {
-                sideSensor = DistanceSensorName.RIGHT;
+                sideSensor = RangeSensorName.rangeSensor;
             } else {
-                sideSensor = DistanceSensorName.LEFT;
+                sideSensor = RangeSensorName.rangeSensor;
             }
 
             double kp = 1.0 / 80.0;    // 50% power at 40cm.
@@ -320,7 +337,7 @@ public class RelicRecoveryAuto extends RobotHardware {
         @Override
         public State update() {
             double dt = time - lastTime;
-            double frontCm = getDistanceSensorCm(DistanceSensorName.FRONT);
+            double frontCm = getDistanceSensorCm(RangeSensorName.rangeSensor);
             double sideCm = getDistanceSensorCm(sideSensor);
             double totalCm = Math.sqrt(
                     Math.pow(frontCm, 2) + Math.pow(sideCm, 2));
@@ -340,7 +357,7 @@ public class RelicRecoveryAuto extends RobotHardware {
 
             double frontPower = frontPid.update(targetFrontDistCm, frontCm, dt);
             double sidePower = sidePid.update(targetSideDistCm, sideCm, dt);
-            if (sideSensor == DistanceSensorName.RIGHT) {
+            if (sideSensor == RangeSensorName.rangeSensor) {
                 // Right sensor faces -Y.
                 sidePower = sidePower * -1;
             }
@@ -366,7 +383,7 @@ public class RelicRecoveryAuto extends RobotHardware {
         private double targetFrontDistCm;
         private double targetSideDistCm;
         // Side sensor name.
-        private DistanceSensorName sideSensor;
+        private RangeSensorName sideSensor;
 
         private Pid frontPid;
         private Pid sidePid;
@@ -379,6 +396,8 @@ public class RelicRecoveryAuto extends RobotHardware {
     protected Color.Ftc robotColor;
     // The robot's starting position.
     protected StartPosition robotStartPos;
+
+    protected double turnAngleToCryptobox;
     // The detected Vuforia Mark.
     private RelicRecoveryVuMark vuMark;
     // Per robot tuning parameters.

@@ -2,17 +2,6 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.teamcode.Stuff_From_Loveland.TeleMap;
 
 @TeleOp(name = "XTele", group = "X")
 public class Tele extends OpMode{
@@ -21,6 +10,7 @@ public class Tele extends OpMode{
     double ypow;
     double zpow;
     double rightx;
+    boolean toggle = false;
 
     @Override
     public void init() {
@@ -59,10 +49,10 @@ public class Tele extends OpMode{
 
         //sets movement speeds for motors to move correctly based on joystick input
         //runs at .8 speed to provide driver assisting controls
-        bot.motorLF.setPower(.8*(bPair-zpow));
-        bot.motorRF.setPower(.8*(-aPair-zpow));
-        bot.motorRB.setPower(.8*(-bPair-zpow));
-        bot.motorLB.setPower(.8*(aPair-zpow));
+        bot.motorLF.setPower(.8*(bPair-toggle(toggle,zpow)));
+        bot.motorRF.setPower(.8*(-aPair-toggle(toggle,zpow)));
+        bot.motorRB.setPower(.8*(-bPair-toggle(toggle,zpow)));
+        bot.motorLB.setPower(.8*(aPair-toggle(toggle,zpow)));
 
         //assings the joystick value to another variable
         double slidePower = -gamepad2.left_stick_y;
@@ -73,6 +63,16 @@ public class Tele extends OpMode{
             slidePower /= 4;
         }
         bot.slideMotor.setPower(slidePower);
+
+        if(gamepad1.a){
+            if(!toggle){
+                toggle = true;
+            }
+            else {
+                toggle = false;
+            }
+
+        }
 
 
         //assigns the value of the joystick to a variable
@@ -113,6 +113,16 @@ public class Tele extends OpMode{
             wristDown(); // bring wrist down for relic
         }
 
+
+    }
+
+    public double toggle(boolean toggle, double power){
+        if(toggle){
+            return power * .4;
+        }
+        else{
+            return power;
+        }
 
     }
 

@@ -1,9 +1,4 @@
 package org.firstinspires.ftc.teamcode.opmode;
-import android.provider.ContactsContract;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
@@ -16,11 +11,11 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.R;
 import org.firstinspires.ftc.teamcode.base.Color;
 import org.firstinspires.ftc.teamcode.control.Omni;
 
-import static org.firstinspires.ftc.teamcode.opmode.RobotHardware.ImuName.imu;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -32,10 +27,11 @@ import static org.firstinspires.ftc.teamcode.opmode.RobotHardware.ImuName.imu;
 public abstract class RobotHardware extends OpMode {
     // The motors on the robot.
     public enum MotorName {
-        leftFront,
-        rightFront,
-        leftBack,
-        rightBack,
+        motorLF,
+        motorRF,
+        motorLB,
+        motorRB,
+        slideMotor
     }
 
     public enum ImuName {
@@ -54,26 +50,26 @@ public abstract class RobotHardware extends OpMode {
 
 
     protected void setDriveForTank(double left, double right) {
-        setPower(MotorName.leftFront, left);
-        setPower(MotorName.leftBack, left);
-        setPower(MotorName.rightFront, right);
-        setPower(MotorName.rightBack, right);
+        setPower(MotorName.motorLF, left);
+        setPower(MotorName.motorLB, left);
+        setPower(MotorName.motorRF, right);
+        setPower(MotorName.motorRB, right);
     }
 
 
     protected void setDriveForOmni(Omni.Motion motion) {
         Omni.Wheels wheels = Omni.motionToWheels(motion);
-        setPower(MotorName.leftFront, wheels.leftFrontPower);
-        setPower(MotorName.leftBack, wheels.rightFrontPower);
-        setPower(MotorName.rightFront, wheels.leftBackPower);
-        setPower(MotorName.rightBack, wheels.rightBackPower);
+        setPower(MotorName.motorLF, wheels.leftFrontPower);
+        setPower(MotorName.motorLB, wheels.rightFrontPower);
+        setPower(MotorName.motorRF, wheels.leftBackPower);
+        setPower(MotorName.motorRB, wheels.rightBackPower);
     }
     protected void accelerate(double speed) {
         double clip_speed = Range.clip(speed, -1, 1);
-        setPower(MotorName.leftFront, clip_speed);
-        setPower(MotorName.leftBack, clip_speed);
-        setPower(MotorName.rightFront, clip_speed);
-        setPower(MotorName.rightBack, clip_speed);
+        setPower(MotorName.motorLF, clip_speed);
+        setPower(MotorName.motorLB, clip_speed);
+        setPower(MotorName.motorRF, clip_speed);
+        setPower(MotorName.motorRB, clip_speed);
     }
     protected Orientation getAngularOrientation()
     {
@@ -102,15 +98,17 @@ public abstract class RobotHardware extends OpMode {
     protected void setDriveForOmniForSpeed(Omni.Motion motion) {
         Omni.Wheels wheels = Omni.motionToWheels(motion).scaleWheelPower(
                 Math.sqrt(2));
-        setPower(MotorName.leftFront, wheels.leftFrontPower);
-        setPower(MotorName.leftBack, wheels.rightFrontPower);
-        setPower(MotorName.rightFront, wheels.leftBackPower);
-        setPower(MotorName.rightBack, wheels.rightBackPower);
+        setPower(MotorName.motorLF, wheels.leftFrontPower);
+        setPower(MotorName.motorLB, wheels.leftBackPower);
+        setPower(MotorName.motorRF, wheels.rightFrontPower);
+        setPower(MotorName.motorRB, wheels.rightBackPower);
     }
 
 
     protected enum ServoName {
         jewelServo,
+        glyphServo1,
+        glyphServo2
         //JEWEL_HIT,
     }
 
@@ -196,10 +194,8 @@ public abstract class RobotHardware extends OpMode {
     }
 
     // The distance sensors on the robot.
-    protected enum DistanceSensorName {
-        LEFT,
-        FRONT,
-        RIGHT,
+    protected enum RangeSensorName {
+        rangeSensor
     }
 
     /**
@@ -207,8 +203,8 @@ public abstract class RobotHardware extends OpMode {
      * Returns -1 when the sensor is unavailable.
      * @param sensor The sensor to read.
      */
-    protected double getDistanceSensorCm(DistanceSensorName sensor) {
-        DistanceSensor s = allDistanceSensors.get(sensor.ordinal());
+    protected double getDistanceSensorCm(RangeSensorName sensor) {
+        DistanceSensor s = allRangeSensor.get(sensor.ordinal());
         if (s == null) {
             telemetry.addData("Distance Sensor Missing", sensor.name());
             return -1;
@@ -268,15 +264,15 @@ public abstract class RobotHardware extends OpMode {
             }
         }
 
-        allDistanceSensors = new ArrayList<DistanceSensor>();
-        for (DistanceSensorName s : DistanceSensorName.values()) {
+        allRangeSensor = new ArrayList<DistanceSensor>();
+        for (RangeSensorName s : RangeSensorName.values()) {
             try {
-                allDistanceSensors.add(hardwareMap.get(
+                allRangeSensor.add(hardwareMap.get(
                         ModernRoboticsI2cRangeSensor.class,
                         s.name()));
             } catch (Exception e) {
-                telemetry.addData("Distance Sensor Missing", s.name());
-                allDistanceSensors.add(null);
+                telemetry.addData("Range Sensor Missing", s.name());
+                allRangeSensor.add(null);
             }
         }
 
@@ -325,7 +321,7 @@ public abstract class RobotHardware extends OpMode {
     // All color sensors on the robot, in order of ColorSensorName.
     private ArrayList<ColorSensor> allColorSensors;
     // All distance sensors on the robot, in order of DistanceSensorName.
-    private ArrayList<DistanceSensor> allDistanceSensors;
+    private ArrayList<DistanceSensor> allRangeSensor;
     // All IMU sensors on the robot, in order of ImuSensorName
     private List<BNO055IMU> allImuSensors;
 
