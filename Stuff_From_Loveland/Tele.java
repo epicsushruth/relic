@@ -87,8 +87,7 @@ public class Tele extends OpMode{
         }
         if(gamepad2.x)  //opens the right servo
         {
-            openRight();
-            bot.glyphServo2.setPosition(.42);
+            bot.jewelServo.setPosition(.2);
         }
         if(gamepad2.b)  // openRight
         {
