@@ -16,14 +16,14 @@ public class FullAutoRedPerp extends Processor{
         bot.init(hardwareMap);
 
         //analyzes the Pictogram image
-        checkCol();
+        //checkCol();
         waitForStart();
 
         //once again analyzes the Pictogram image
         checkCol();
 
         //stores the Pictogram image value in a instance variable
-        checkVu();
+        //checkVu();
 
         //sets servo to grab the glyph touching the robot at the start of autonomous
         bot.glyphServo1.setPosition(0.69);
@@ -48,7 +48,7 @@ public class FullAutoRedPerp extends Processor{
         turn(-90);
 
         //moves the robot a very small increment to line up with the cryptobox
-        goAngle(5,180);
+        goAngle(-0.5,0);
 
         //travels in increments along the cryptobox to stop at the correct column indicated by the Pictogram image
         gotoColumnLeftEnc();

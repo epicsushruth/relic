@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import static java.lang.Thread.sleep;
-
 /**
  * Created by WHHS Robotics on 9/23/17.
  */
@@ -17,22 +15,22 @@ public class FullAutoBlueParallel extends Processor{
         bot.init(hardwareMap);
 
         //anslyzes the pictogram image
-        checkCol();
+        //checkCol();
         waitForStart();
 
         //analyzes the pictogram image again
         checkCol();
 
         //stores the Pictogram image in a instance variable
-        checkVu();
+        //checkVu();
 
         //sets servo to grab the glyph touching the robot at the start of autonomous
         bot.glyphServo1.setPosition(0.69);
         bot.glyphServo2.setPosition(0.35);
-        sleep(2000);
+        sleep(1000);
 
         runtime.reset();
-        while(runtime.milliseconds()<750) {
+        while(runtime.milliseconds()<300) {
             //raises the Rev slides to pick the glyph off the ground to prevent dragging the glyph
             bot.slideMotor.setPower(-.8);
         }
@@ -50,7 +48,7 @@ public class FullAutoBlueParallel extends Processor{
         turn(180);
 
         //moves the robot a very small increment to line up with the cryptobox
-        goAngle(13.5, 180);
+        goAngle(13.1, 180);
 
         sleep(1000);
 

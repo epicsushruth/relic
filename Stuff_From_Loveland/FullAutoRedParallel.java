@@ -15,7 +15,7 @@ public class FullAutoRedParallel extends Processor{
         bot.init(hardwareMap);
 
         //analyzes the Pictogram image
-        checkCol();
+       // checkCol();
         waitForStart();
 
         //analyzes the Pictogram image
@@ -49,7 +49,7 @@ public class FullAutoRedParallel extends Processor{
         turn(177);
 
         //moves the robot a very small increment to line up with the cryptobox
-        goAngle(12, 0);
+        goAngle(12.5, 0);
 
         sleep(500);
 
