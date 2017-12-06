@@ -445,7 +445,7 @@ public abstract class Processor extends LinearOpMode {
         int c = 0;
         while(count > c){
 
-            goAngle(5,0);
+            goAngle(5.5,0);
             stopBotMotors();
 
 
@@ -481,17 +481,16 @@ public abstract class Processor extends LinearOpMode {
 
 
     public void goAngle(double dist, double angle) {
-        resetEnc();
         enterPosenc();
         double angel = Math.PI*angle/180;
         double x = Math.cos(angel);
         double y = Math.sin(angel);
         double distance = dist / (OMNI_WHEEL_CIRCUMFERENCE);
         double ticks = 1120 * distance;
-        int ticksRF = (int)Math.round(ticks*Math.signum(y-x));
-        int ticksLF = (int)Math.round(ticks*Math.signum(-y-x));
-        int ticksLB = (int)Math.round(ticks*Math.signum(-y+x));
-        int ticksRB = (int)Math.round(ticks*Math.signum(y+x));
+        int ticksRF = bot.motorRF.getCurrentPosition()+(int)Math.round(ticks*Math.signum(y-x));
+        int ticksLF = bot.motorLF.getCurrentPosition()+(int)Math.round(ticks*Math.signum(-y-x));
+        int ticksLB = bot.motorLB.getCurrentPosition() +(int)Math.round(ticks*Math.signum(-y+x));
+        int ticksRB = bot.motorRB.getCurrentPosition()+(int)Math.round(ticks*Math.signum(y+x));
         bot.motorLF.setTargetPosition(ticksLF);
         bot.motorRF.setTargetPosition(ticksRF);
         bot.motorRB.setTargetPosition(ticksRB);

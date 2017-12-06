@@ -42,7 +42,7 @@ public class FullAutoBluePerp extends Processor{
 
         //moves the robot a distance of 21 inches at an angle of 180 off the horizontal with the side with the glyph servo being orientated at the angle of 90 off the horizontal
 
-        goAngle(21,180);
+        goAngle(23,180);
 
         //turns the robot 90 degrees counter clock wise
         turn(90);
