@@ -50,6 +50,7 @@ public class FullAutoBluePerp extends Processor{
         //moves the robot a very small increment to line up with the cryptobox
        // goAngle(5,0);
 
+
         //travels in increments along the cryptobox to stop at the correct column indicated by the Pictogram image
         gotoColumnRightEnc();
 

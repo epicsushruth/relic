@@ -2,9 +2,10 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name = "XTele", group = "X")
-public class Tele extends OpMode{
+@TeleOp(name = "teletest", group = "X")
+public class TeleTest extends OpMode{
     TeleMap bot = new TeleMap();
     double xpow;
     double ypow;
@@ -83,20 +84,11 @@ public class Tele extends OpMode{
 
         if(gamepad2.a)  //closes the servos to hold the glyph
         {
-            gripGlyphTop();
+            gripGlyph();
         }
-        if(gamepad2.x)
-        {
-            gripGlyphBot();
-        }
-        if(gamepad2.y) //releases the glyph from the servos
-        {
-            realeaseGlyphTop();
-        }
-
         if(gamepad2.x)  //opens the right servo
         {
-            realeaseGlyphBot();
+            closeJewel();
         }
         if(gamepad2.b)  // openRight
         {
@@ -104,7 +96,10 @@ public class Tele extends OpMode{
 
             bot.glyphServo1.setPosition(.2);
         }
-
+        if(gamepad2.y) //releases the glyph from the servos
+        {
+            realeaseGlyph();
+        }
         if(gamepad2.dpad_left){
             fingersClose();  // fingers closed for relic
         }
@@ -117,7 +112,42 @@ public class Tele extends OpMode{
         if(gamepad2.dpad_down){
             wristDown(); // bring wrist down for relic
         }
+        while(gamepad1.x)
+        {
+            bot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            while(true) {
+                bot.motorLB.setPower(0.5);
+                telemetry.addData("encoders", bot.motorLB.getCurrentPosition());
+                telemetry.update();
+            }
+        }
+        while(gamepad1.y)
+        {
+            bot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            while(true) {
+                bot.motorRB.setPower(0.5);
+                telemetry.addData("encoders", bot.motorRB.getCurrentPosition());
+                telemetry.update();
+            }
+        }
+        while(gamepad1.b)
+        {
+            bot.motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            while(true) {
+                bot.motorLF.setPower(0.5);
+                telemetry.addData("encoders", bot.motorLF.getCurrentPosition());
+                telemetry.update();
+            }
+        }
 
+        {
+            bot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            while(true) {
+                bot.motorRF.setPower(0.5);
+                telemetry.addData("encoders", bot.motorRF.getCurrentPosition());
+                telemetry.update();
+            }
+        }
 
     }
 
@@ -146,30 +176,17 @@ public class Tele extends OpMode{
     public void wristDown() {
         bot.relicWrist.setPosition(0);
     }
-    public void gripGlyphBot() {
+    public void gripGlyph() {
         bot.glyphServo1.setPosition(0.69);
         bot.glyphServo2.setPosition(0.35);
     }
-    public void gripGlyphTop()
-    {
-        bot.glyphServo3.setPosition(0.35);
-        bot.glyphServo4.setPosition(0.5);
-    }
 
-    public void openRightBot() {
+    public void openRight() {
         bot.glyphServo1.setPosition(0.53);
     }
 
-    public void openLeftBot() {
+    public void openLeft() {
         bot.glyphServo2.setPosition(0.5);
-
-    }
-    public void openRightTop() {
-        bot.glyphServo3.setPosition(0.5);
-    }
-
-    public void openLeftTop() {
-        bot.glyphServo4.setPosition(0.35);
 
     }
     public void closeJewel()
@@ -177,14 +194,9 @@ public class Tele extends OpMode{
         bot.jewelServo.setPosition(0.2);
     }
 
-    public void realeaseGlyphBot() {
-        openLeftBot();
-        openRightBot();
-    }
-    public void realeaseGlyphTop()
-    {
-        openLeftTop();
-        openRightTop();
+    public void realeaseGlyph() {
+        openLeft();
+        openRight();
     }
 
 

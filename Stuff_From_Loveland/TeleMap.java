@@ -31,6 +31,8 @@ public class TeleMap {
     Servo jewelServo;
     Servo relicFingers;
     Servo relicWrist;
+    Servo glyphServo3;
+    Servo glyphServo4;
 
 
 
@@ -96,7 +98,7 @@ public class TeleMap {
 
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        jewelServo.setPosition(.2);
+        jewelServo.setPosition(.4);
         //glyphServo1.setPosition(0.4);
         //glyphServo2.setPosition(0.6);
 

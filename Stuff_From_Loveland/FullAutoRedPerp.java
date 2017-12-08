@@ -28,6 +28,8 @@ public class FullAutoRedPerp extends Processor{
         //sets servo to grab the glyph touching the robot at the start of autonomous
         bot.glyphServo1.setPosition(0.69);
         bot.glyphServo2.setPosition(0.35);
+        bot.glyphServo3.setPosition(.35);
+        bot.glyphServo4.setPosition(.5);
         sleep(1000);
 
         runtime.reset();

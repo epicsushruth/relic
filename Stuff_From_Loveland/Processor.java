@@ -549,10 +549,10 @@ public abstract class Processor extends LinearOpMode {
         bot.motorRB.setPower(0);
 
     }
-
+/*
     public void stubIT(){
         bot.stubbedInit();
-    }
+    }*/
 
     public void goAnglePower(double dist, double angle,double power) {
         resetEnc();
