@@ -25,6 +25,8 @@ public class Tele extends OpMode{
         xpow = gamepad1.left_stick_x;
 
         //creates a deadzone for left stick y
+
+        /*
         if(Math.abs(ypow)<.05){
             ypow = 0;
 
@@ -34,6 +36,8 @@ public class Tele extends OpMode{
             xpow = 0;
 
         }
+
+        */
     }
 
     @Override
@@ -41,8 +45,9 @@ public class Tele extends OpMode{
 
         //takes the joystick values and converts to motor speeds through holonomic calculations
         readGamePad();
-        double mag = Math.sqrt(ypow * ypow + xpow * xpow);
-        double theta = Math.atan2(ypow, xpow);
+        double mag = ypow * ypow + xpow * xpow;
+        //double theta = Math.atan2(ypow, xpow);
+        double theta = Math.round(Math.atan2(ypow, xpow) * 4.0 / Math.PI) * Math.PI / 4.0;
         double aPair = mag * Math.cos(theta - Math.PI/4);
         double bPair = mag * Math.sin(theta - Math.PI/4);
 

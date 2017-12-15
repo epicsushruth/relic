@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -38,6 +39,7 @@ public class Map {
     ModernRoboticsI2cRangeSensor rangeSensor = null;
 
     ColorSensor colorSensor = null;
+    DistanceSensor distanceSensor = null;
 
     int cameraMonitorViewId;
     VuforiaTrackables relicTrackables;
@@ -89,6 +91,7 @@ public class Map {
 
         rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "rangeSensor");
         colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
+        distanceSensor = hwMap.get(DistanceSensor.class, "distanceSensor");
 
 
         cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
@@ -118,6 +121,7 @@ public class Map {
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         jewelServo.setPosition(.2);
+
 
         glyphServo1.setPosition(0.4);
         glyphServo4.setPosition(.4);
