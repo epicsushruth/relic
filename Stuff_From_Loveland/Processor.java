@@ -360,8 +360,42 @@ public abstract class Processor extends LinearOpMode {
 
         stopBotMotors();
     }
+    public int getColumn()
+    {
+        int x = 0;
+        if (bot.columnToScore == RelicRecoveryVuMark.RIGHT) {
+           x =1;
+        }
+        if (bot.columnToScore == RelicRecoveryVuMark.CENTER) {
+            x =2;
+        }
+        if (bot.columnToScore == RelicRecoveryVuMark.LEFT) {
+            x =3;
+        }
+        return x;
+    }
 
-
+    public double getDistanceColumn(int column)
+    {
+        double ret = 0;
+        if(column ==1)
+        {
+            ret = 45;
+        }
+        else if(column ==2)
+        {
+            ret = 52.5;
+        }
+        else if (column == 3)
+        {
+            ret = 60;
+        }
+        else
+        {
+            ret = 45;
+        }
+        return ret;
+    }
 
     public void goPulses(int numOfCol) {
         int count = 0;
@@ -522,6 +556,69 @@ public abstract class Processor extends LinearOpMode {
         sleep(250);
         enterEnc();
     }
+    public void goAngleRange(double dist, double angle, int column, double power)
+    {
+        enterPosenc();
+        double count = 0;
+        double angel = Math.PI*angle/180;
+        double x = Math.cos(angel);
+        double y = Math.sin(angel);
+        double distance = dist / (OMNI_WHEEL_CIRCUMFERENCE);
+        double ticks = 1120 * distance;
+        int ticksRF = bot.motorRF.getCurrentPosition()+(int)Math.round(ticks*Math.signum(y-x));
+        int ticksLF = bot.motorLF.getCurrentPosition()+(int)Math.round(ticks*Math.signum(-y-x));
+        int ticksLB = bot.motorLB.getCurrentPosition() +(int)Math.round(ticks*Math.signum(-y+x));
+        int ticksRB = bot.motorRB.getCurrentPosition()+(int)Math.round(ticks*Math.signum(y+x));
+        bot.motorLF.setTargetPosition(ticksLF);
+        bot.motorRF.setTargetPosition(ticksRF);
+        bot.motorRB.setTargetPosition(ticksRB);
+        bot.motorLB.setTargetPosition(ticksLB);
+        bot.motorRF.setPower(power * (y - x));
+        bot.motorLF.setPower(power * (-y - x));
+        bot.motorLB.setPower(power * (-y + x));
+        bot.motorRB.setPower(power * (y + x));
+        while ((bot.motorLB.isBusy() && bot.motorRB.isBusy()&&bot.motorRF.isBusy()&&bot.motorLF.isBusy())) {
+
+            if(bot.rangeSensor.getDistance(DistanceUnit.CM)<27)
+            {
+                count++;
+                runtime.reset();
+                while(bot.runtime.seconds()<2)
+                {
+
+                }
+            }
+                if(count == column) {
+                    bot.motorRF.setPower(0);
+                    bot.motorRB.setPower(0);
+                    bot.motorLF.setPower(0);
+                    bot.motorLB.setPower(0);
+                    break;
+                }
+
+            telemetry.addData("Path2",  "Running at %7d :%7d",
+                    bot.motorLB.getCurrentPosition(),
+                    bot.motorLF.getCurrentPosition(),
+                    bot.motorRB.getCurrentPosition(),
+                    bot.motorRF.getCurrentPosition());
+            telemetry.addData("target",  "Running at %7d :%7d",
+                    bot.motorLB.getTargetPosition(),
+                    bot.motorLF.getTargetPosition(),
+                    bot.motorRB.getTargetPosition(),
+                    bot.motorRF.getTargetPosition());
+            telemetry.addData("Count: ", count);
+            telemetry.update();
+        }
+
+        stopBotMotors();
+
+        sleep(250);
+        enterEnc();
+    }
+
+
+
+
 
 
     public void resetEnc(){
@@ -596,5 +693,10 @@ public abstract class Processor extends LinearOpMode {
 
         sleep(250);
         enterEnc();
+    }
+    public float angularOffset(){
+        Orientation angleZZ = bot.imu.getAngularOrientation();
+        float x = angleZZ.firstAngle;
+        return x;
     }
 }

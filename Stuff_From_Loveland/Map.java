@@ -5,7 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -39,7 +39,8 @@ public class Map {
     ModernRoboticsI2cRangeSensor rangeSensor = null;
 
     ColorSensor colorSensor = null;
-    DistanceSensor distanceSensor = null;
+
+    DigitalChannel touchSensor;
 
     int cameraMonitorViewId;
     VuforiaTrackables relicTrackables;
@@ -91,7 +92,8 @@ public class Map {
 
         rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "rangeSensor");
         colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
-        distanceSensor = hwMap.get(DistanceSensor.class, "distanceSensor");
+        touchSensor = hwMap.get(DigitalChannel.class, "touchSensor");
+        touchSensor.setMode(DigitalChannel.Mode.INPUT);
 
 
         cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
