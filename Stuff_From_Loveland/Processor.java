@@ -10,7 +10,6 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -241,7 +240,7 @@ public abstract class Processor extends LinearOpMode {
 
 
 
-
+/*
     public void gotoColumnRight() {
         enterEnc();
         // the direction approaching the cryptobox changes depending on the side
@@ -319,7 +318,7 @@ public abstract class Processor extends LinearOpMode {
             // clear the column so the same column is not counted three time
         }
 
-*/
+
         if (bot.columnToScore == RelicRecoveryVuMark.LEFT) {
             goColumPrep(1);
         }
@@ -346,7 +345,7 @@ public abstract class Processor extends LinearOpMode {
 
 
             // clear the column so the same column is not counted three time
-        }*/
+        }
 
         if (bot.columnToScore == RelicRecoveryVuMark.RIGHT) {
             goColums(1);
@@ -360,6 +359,7 @@ public abstract class Processor extends LinearOpMode {
 
         stopBotMotors();
     }
+    */
     public int getColumn()
     {
         int x = 0;
@@ -373,6 +373,12 @@ public abstract class Processor extends LinearOpMode {
             x =3;
         }
         return x;
+    }
+    public void align(double offset)
+    {
+        double error = angularOffset();
+        double diff = offset -error;
+        turn(diff);
     }
 
     public double getDistanceColumn(int column)
@@ -396,7 +402,7 @@ public abstract class Processor extends LinearOpMode {
         }
         return ret;
     }
-
+/*
     public void goPulses(int numOfCol) {
         int count = 0;
 
@@ -489,7 +495,7 @@ public abstract class Processor extends LinearOpMode {
         }
         stopBotMotors();
     }
-
+*/
     public void score() {
 
         runtime.reset();
@@ -556,6 +562,7 @@ public abstract class Processor extends LinearOpMode {
         sleep(250);
         enterEnc();
     }
+    /*
     public void goAngleRange(double dist, double angle, int column, double power)
     {
         enterPosenc();
@@ -618,7 +625,7 @@ public abstract class Processor extends LinearOpMode {
 
 
 
-
+*/
 
 
     public void resetEnc(){

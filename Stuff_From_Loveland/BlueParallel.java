@@ -3,11 +3,13 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 /**
  * Created by Sushr on 12/15/2017.
  */
-@Autonomous(name = "redParallel", group = "fjfrjkdk")
-public class RedParallel extends Processor{
+@Autonomous(name = "BlueParallel", group = "fjfrjkdk")
+public class BlueParallel extends Processor{
 
     int count = 0;
     boolean touch = false;
@@ -33,35 +35,22 @@ public class RedParallel extends Processor{
         bot.slideMotor.setPower(0);
 
         //knocks the correct jewel off according to our alliance color
-        knockJewel(true);
+        knockJewel(false);
 
-        goAngle(10,0);
+        while(bot.rangeSensor.getDistance(DistanceUnit.INCH)<getDistanceColumn(getColumn())) {
+            telemetry.addData("dist",bot.rangeSensor.getDistance(DistanceUnit.INCH));
+            telemetry.addData("Count: ", count);
+            telemetry.update();
+            bot.motorRF.setPower(0.2);
+            bot.motorRB.setPower(-0.2);
+            bot.motorLB.setPower(-0.2);
+            bot.motorLF.setPower(0.2);
+        }
         align(0);
         turn(180);
         align(180);
-        while(count<getColumn())
-        {
-            bot.motorRB.setPower(-0.2);
-            bot.motorRF.setPower(0.2);
-            bot.motorLB.setPower(-0.2);
-            bot.motorLF.setPower(0.2);
-            if(bot.colorsensor2.blue()>10||bot.colorsensor2.red()>10)
-            {
-                runtime.reset();
-                count++;
-                while(runtime.seconds()<500)
-                {
-                    bot.motorRB.setPower(-0.1);
-                    bot.motorRF.setPower(0.1);
-                    bot.motorLB.setPower(-0.1);
-                    bot.motorLF.setPower(0.1);
-                }
-            }
-        }
         stopBotMotors();
         sleep(1000);
 
-        //releases the glyph and pushes the glyph into the cryptobox
-        score();
-    }
+        score();    }
 }

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -35,8 +34,7 @@ public class Map {
     Servo glyphServo4;
     Servo jewelServo;
 
-
-    ModernRoboticsI2cRangeSensor rangeSensor = null;
+    ColorSensor colorsensor2 = null;
 
     ColorSensor colorSensor = null;
 
@@ -55,6 +53,9 @@ public class Map {
     double rX;
     double rY;
     double rZ;
+
+    float x;
+    float y;
     RelicRecoveryVuMark vuMark;
 
     VuforiaLocalizer vuforia;
@@ -90,7 +91,7 @@ public class Map {
 
         imu.initialize(parameters);
 
-        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "rangeSensor");
+        colorsensor2 =  hwMap.get(ColorSensor.class, "colorSensor2");
         colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
         touchSensor = hwMap.get(DigitalChannel.class, "touchSensor");
         touchSensor.setMode(DigitalChannel.Mode.INPUT);
