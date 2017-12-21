@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
 /**
  * Created by Sushr on 12/16/2017.
  */
@@ -37,7 +35,7 @@ public class BluePerpendicular extends Processor{
 
         //knocks the correct jewel off according to our alliance color
         knockJewel(false);
-
+/*
         while(bot.rangeSensor.getDistance(DistanceUnit.INCH)<15) {
             telemetry.addData("dist",bot.rangeSensor.getDistance(DistanceUnit.INCH));
             telemetry.addData("Count: ", count);
@@ -47,11 +45,12 @@ public class BluePerpendicular extends Processor{
             bot.motorLB.setPower(-0.2);
             bot.motorLF.setPower(0.2);
         }
-
+*/
         align(0);
         turn(90);
         align(90);
         sleep(500);
+        /*
         while(bot.rangeSensor.getDistance(DistanceUnit.INCH)<getDistanceColumn(getColumn())||count!=getColumn()) {
             telemetry.addData("dist",bot.rangeSensor.getDistance(DistanceUnit.INCH));
             telemetry.addData("Count: ", count);
@@ -65,6 +64,7 @@ public class BluePerpendicular extends Processor{
                 count++;
             }
         }
+        */
         align(90);
 
         stopBotMotors();

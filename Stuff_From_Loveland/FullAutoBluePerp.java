@@ -52,7 +52,7 @@ public class FullAutoBluePerp extends Processor{
 
 
         //travels in increments along the cryptobox to stop at the correct column indicated by the Pictogram image
-        gotoColumnRightEnc();
+        //gotoColumnRightEnc();
 
         //stops all motion
         stopBotMotors();

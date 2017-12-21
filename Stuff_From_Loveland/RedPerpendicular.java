@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
 /**
  * Created by Sushr on 12/16/2017.
  */
@@ -19,7 +17,7 @@ public class RedPerpendicular extends Processor{
         bot.init(hardwareMap);
 
         waitForStart();
-        bot.x = angularOffset();
+        //bot.x = angularOffset();
         checkVu();
         checkCol();
         bot.glyphServo1.setPosition(0.69);
@@ -38,7 +36,7 @@ public class RedPerpendicular extends Processor{
 
         //knocks the correct jewel off according to our alliance color
         knockJewel(true);
-
+/*
         while(bot.rangeSensor.getDistance(DistanceUnit.INCH)<15) {
             telemetry.addData("dist",bot.rangeSensor.getDistance(DistanceUnit.INCH));
             telemetry.addData("Count: ", count);
@@ -48,14 +46,19 @@ public class RedPerpendicular extends Processor{
             bot.motorLB.setPower(0.2);
             bot.motorLF.setPower(-0.2);
         }
-        /*bot.y = angularOffset();
+        bot.y = angularOffset();
         double difference = bot.x-bot.y;
         turn(difference);*/
+        goAngle(10,0);
+        sleep(1000);
         align(0);
+        sleep(1000);
         turn(-90);
+        sleep(2000);
         align(-90);
 
-        sleep(500);
+        sleep(1000);
+        /*
         while(bot.rangeSensor.getDistance(DistanceUnit.INCH)<getDistanceColumn(getColumn())||count!=getColumn()) {
             telemetry.addData("dist",bot.rangeSensor.getDistance(DistanceUnit.INCH));
             telemetry.addData("Count: ", count);
@@ -69,9 +72,15 @@ public class RedPerpendicular extends Processor{
                 count++;
             }
         }
+        */
         align(-90);
+        raiseColorServo();
+        gotoColumnLeft();
+
         stopBotMotors();
 
+        sleep(1000);
+        bot.colorServo.setPosition(0);
         sleep(1000);
 
         //releases the glyph and pushes the glyph into the cryptobox

@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
 /**
  * Created by Sushr on 12/15/2017.
  */
@@ -36,7 +34,7 @@ public class BlueParallel extends Processor{
 
         //knocks the correct jewel off according to our alliance color
         knockJewel(false);
-
+/*
         while(bot.rangeSensor.getDistance(DistanceUnit.INCH)<getDistanceColumn(getColumn())) {
             telemetry.addData("dist",bot.rangeSensor.getDistance(DistanceUnit.INCH));
             telemetry.addData("Count: ", count);
@@ -46,6 +44,7 @@ public class BlueParallel extends Processor{
             bot.motorLB.setPower(-0.2);
             bot.motorLF.setPower(0.2);
         }
+        */
         align(0);
         turn(180);
         align(180);

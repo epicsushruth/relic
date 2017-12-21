@@ -38,7 +38,7 @@ public class GoPulses extends Processor{
         sleep(1000);
 
         bot.columnToScore = RelicRecoveryVuMark.CENTER;
-        gotoColumnRight();
+        //gotoColumnRight();
 
         score();
 

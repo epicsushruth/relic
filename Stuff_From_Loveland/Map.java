@@ -2,9 +2,10 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -24,7 +25,7 @@ public class Map {
     HardwareMap hwMap = null;
     DcMotor motorLF;
     DcMotor motorLB;
-    DcMotor motorRF;
+    DcMotor motorRF = new DcMotorStub();
     DcMotor motorRB;
     DcMotor slideMotor;
 
@@ -33,12 +34,16 @@ public class Map {
     Servo glyphServo3;
     Servo glyphServo4;
     Servo jewelServo;
+    Servo colorServo;
 
-    ColorSensor colorsensor2 = null;
+
 
     ColorSensor colorSensor = null;
+    ModernRoboticsI2cRangeSensor rangeSensor = null;
 
-    DigitalChannel touchSensor;
+    //DigitalChannel touchSensor;
+
+    DistanceSensor colorSensor2 = null;
 
     int cameraMonitorViewId;
     VuforiaTrackables relicTrackables;
@@ -53,9 +58,6 @@ public class Map {
     double rX;
     double rY;
     double rZ;
-
-    float x;
-    float y;
     RelicRecoveryVuMark vuMark;
 
     VuforiaLocalizer vuforia;
@@ -80,6 +82,9 @@ public class Map {
         glyphServo3 = hwMap.servo.get("glyphServo3");
         glyphServo4 = hwMap.servo.get("glyphServo4");
         jewelServo = hwMap.servo.get("jewelServo");
+        colorServo = hwMap.servo.get("colorServo");
+
+
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -91,10 +96,12 @@ public class Map {
 
         imu.initialize(parameters);
 
-        colorsensor2 =  hwMap.get(ColorSensor.class, "colorSensor2");
         colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
-        touchSensor = hwMap.get(DigitalChannel.class, "touchSensor");
-        touchSensor.setMode(DigitalChannel.Mode.INPUT);
+        colorSensor2 = hwMap.get(DistanceSensor.class, "colorSensor2");
+        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "rangeSensor");
+
+        //touchSensor = hwMap.get(DigitalChannel.class, "touchSensor");
+        //touchSensor.setMode(DigitalChannel.Mode.INPUT);
 
 
         cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
@@ -125,6 +132,8 @@ public class Map {
 
         jewelServo.setPosition(.2);
 
+        colorServo.setPosition(0);
+
 
         glyphServo1.setPosition(0.4);
         glyphServo4.setPosition(.4);
@@ -140,6 +149,33 @@ public class Map {
         motorLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+
+    }
+
+    public void stubbedInit() {
+        motorLB = new DcMotorStub();
+        motorRB = new DcMotorStub();
+        motorRF = new DcMotorStub();
+        motorLF = new DcMotorStub();
+        slideMotor = new DcMotorStub();
+
+        motorLF.setDirection(DcMotor.Direction.FORWARD);
+        motorRB.setDirection(DcMotor.Direction.FORWARD);
+        motorRF.setDirection(DcMotor.Direction.FORWARD);
+        motorLB.setDirection(DcMotor.Direction.FORWARD);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Map))
+            return false;
+        Map aObj = (Map) object;
+        if (this.motorLB.equals(aObj.motorLB) &&
+                this.motorRB.equals(aObj.motorRB) &&
+                this.motorRF.equals(aObj.motorRF) &&
+                this.motorLF.equals(aObj.motorLF))
+            return true;
+        return false;
 
     }
 }

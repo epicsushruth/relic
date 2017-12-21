@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -36,7 +35,7 @@ public class TeleMap {
 
 
 
-    ModernRoboticsI2cRangeSensor rangeSensor = null;
+
 
     ColorSensor colorSensor = null;
 
@@ -63,6 +62,8 @@ public class TeleMap {
         //^^^^^^^^^^^^^^^^^^^^^^^^^R^RmotorRF.setDirection(DcMotor.Direction.REVERSE);
         glyphServo1 = hwMap.servo.get("glyphServo1");
         glyphServo2 = hwMap.servo.get("glyphServo2");
+        glyphServo3 = hwMap.servo.get("glyphServo3");
+        glyphServo4 = hwMap.servo.get("glyphServo4");
         jewelServo = hwMap.servo.get("jewelServo");
         relicFingers = hwMap.servo.get("relicFingers");
         relicWrist = hwMap.servo.get("relicWrist");
@@ -77,7 +78,6 @@ public class TeleMap {
 
         imu.initialize(parameters);
 
-        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class,"rangeSensor");
         colorSensor = hwMap.get(ColorSensor.class,"colorSensor");
 
 
@@ -98,7 +98,7 @@ public class TeleMap {
 
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        jewelServo.setPosition(.4);
+        //jewelServo.setPosition(.4);
         //glyphServo1.setPosition(0.4);
         //glyphServo2.setPosition(0.6);
 

@@ -53,7 +53,7 @@ public class FullAutoBlueParallel extends Processor{
         sleep(1000);
 
         //travels in increments along the cryptobox to stop at the correct column indicated by the Pictogram image
-        gotoColumnRightEnc();
+        //gotoColumnRightEnc();
 
         //stops all motion
 

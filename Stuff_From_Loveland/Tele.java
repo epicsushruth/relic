@@ -25,8 +25,6 @@ public class Tele extends OpMode{
         xpow = gamepad1.left_stick_x;
 
         //creates a deadzone for left stick y
-
-        /*
         if(Math.abs(ypow)<.05){
             ypow = 0;
 
@@ -36,8 +34,6 @@ public class Tele extends OpMode{
             xpow = 0;
 
         }
-
-        */
     }
 
     @Override
@@ -45,9 +41,8 @@ public class Tele extends OpMode{
 
         //takes the joystick values and converts to motor speeds through holonomic calculations
         readGamePad();
-        double mag = ypow * ypow + xpow * xpow;
-        //double theta = Math.atan2(ypow, xpow);
-        double theta = Math.round(Math.atan2(ypow, xpow) * 4.0 / Math.PI) * Math.PI / 4.0;
+        double mag = Math.sqrt(ypow * ypow + xpow * xpow);
+        double theta = Math.atan2(ypow, xpow);
         double aPair = mag * Math.cos(theta - Math.PI/4);
         double bPair = mag * Math.sin(theta - Math.PI/4);
 
@@ -86,29 +81,34 @@ public class Tele extends OpMode{
         //sets the variable value to move the motor at the specified speed
         bot.relicMotor.setPower(relicPower);
 
-        if(gamepad2.a)  //closes the servos to hold the glyph
+        if(gamepad2.right_bumper)  //closes the servos to hold the glyph
         {
             gripGlyphTop();
         }
-        if(gamepad2.x)
+        if(gamepad2.left_bumper)
         {
             gripGlyphBot();
         }
         if(gamepad2.y) //releases the glyph from the servos
         {
-            realeaseGlyphTop();
         }
 
-        if(gamepad2.x)  //opens the right servo
+        if(gamepad2.b)  //opens the right servo
         {
             realeaseGlyphBot();
-        }
-        if(gamepad2.b)  // openRight
-        {
-            bot.glyphServo2.setPosition(.8);
+            realeaseGlyphTop();
 
-            bot.glyphServo1.setPosition(.2);
+
         }
+        if(gamepad2.b)  //opens the right servo
+        {
+            realeaseGlyphBot();
+            gripGlyphTop();
+
+
+        }
+
+
 
         if(gamepad2.dpad_left){
             fingersClose();  // fingers closed for relic
@@ -137,19 +137,19 @@ public class Tele extends OpMode{
     }
 
     public void fingersOpen(){
-        bot.relicFingers.setPosition(.6);
+        bot.relicFingers.setPosition(1);
     }
 
     public void fingersClose(){
-        bot.relicFingers.setPosition(.95);
+        bot.relicFingers.setPosition(0);
     }
 
     public void wristUp() {
-        bot.relicWrist.setPosition(.7);
+        bot.relicWrist.setPosition(0);
     }
 
     public void wristDown() {
-        bot.relicWrist.setPosition(0);
+        bot.relicWrist.setPosition(1);
     }
     public void gripGlyphBot() {
         bot.glyphServo1.setPosition(0.69);
@@ -192,5 +192,9 @@ public class Tele extends OpMode{
         openRightTop();
     }
 
+    public void resetGlpyhpos(){
+        realeaseGlyphBot();
+        gripGlyphTop();
+    }
 
 }
