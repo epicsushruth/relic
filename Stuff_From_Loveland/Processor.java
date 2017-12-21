@@ -398,6 +398,31 @@ public abstract class Processor extends LinearOpMode {
         goAngle(2.5,0);
         stopBotMotors();
     }
+    public void drivingRangeForward()
+    {
+        while(bot.rangeSensor.getDistance(DistanceUnit.CM)>34.5)
+        {
+            bot.motorLF.setPower(-0.2);
+            bot.motorRF.setPower((0.2));
+            bot.motorLB.setPower(-0.2);
+            bot.motorRB.setPower(0.2);
+        }
+
+            stopBotMotors();
+
+    }
+    public void drivingRangeBack()
+    {
+        while(bot.rangeSensor.getDistance(DistanceUnit.CM)<34.5)
+        {
+            bot.motorRB.setPower(-0.2);
+            bot.motorLB.setPower(0.2);
+            bot.motorRF.setPower(-0.2);
+            bot.motorLF.setPower(0.2);
+
+        }
+        stopBotMotors();
+    }
     public void align(double offset)
     {
         double error = angularOffset();

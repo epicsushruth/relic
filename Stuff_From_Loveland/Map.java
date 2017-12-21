@@ -40,6 +40,7 @@ public class Map {
 
     ColorSensor colorSensor = null;
     ModernRoboticsI2cRangeSensor rangeSensor = null;
+    //AnalogInput maxbotics = null;
 
     //DigitalChannel touchSensor;
 
@@ -99,6 +100,8 @@ public class Map {
         colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
         colorSensor2 = hwMap.get(DistanceSensor.class, "colorSensor2");
         rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "rangeSensor");
+        //maxbotics = hwMap.get(AnalogInput.class, "ultrasonic");
+
 
         //touchSensor = hwMap.get(DigitalChannel.class, "touchSensor");
         //touchSensor.setMode(DigitalChannel.Mode.INPUT);

@@ -48,6 +48,8 @@ public class RedParallel extends Processor{
         align(180);
         sleep(1000);
         raiseColorServo();
+        drivingRangeForward();
+        drivingRangeBack();
 
 
         gotoColumnLeft();
