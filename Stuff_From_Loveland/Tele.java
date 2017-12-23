@@ -191,7 +191,7 @@ public class Tele extends OpMode{
     public void ram()
     {
         bot.glyphServo1.setPosition(.28);
-        bot.glyphServo2.setPosition(.7);
+        bot.glyphServo2.setPosition(.63);
         bot.glyphServo3.setPosition(.7);
         bot.glyphServo4.setPosition(.18);
     }
