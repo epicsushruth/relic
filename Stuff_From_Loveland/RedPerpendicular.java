@@ -49,12 +49,12 @@ public class RedPerpendicular extends Processor{
         bot.y = angularOffset();
         double difference = bot.x-bot.y;
         turn(difference);*/
-        goAngle(10,0);
-        sleep(1000);
+        goAngle(20,0);
+        sleep(500);
         align(0);
-        sleep(1000);
+        sleep(500);
         turn(-90);
-        sleep(2000);
+        sleep(1000);
         align(-90);
 
         sleep(1000);
@@ -75,6 +75,8 @@ public class RedPerpendicular extends Processor{
         */
         align(-90);
         raiseColorServo();
+        drivingRangeForward();
+        drivingRangeBack();
         gotoColumnLeft();
 
         stopBotMotors();
@@ -82,6 +84,8 @@ public class RedPerpendicular extends Processor{
         sleep(1000);
         bot.colorServo.setPosition(0);
         sleep(1000);
+        align(-91);
+        sleep(500);
 
         //releases the glyph and pushes the glyph into the cryptobox
         score();

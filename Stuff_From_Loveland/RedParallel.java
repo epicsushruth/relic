@@ -54,12 +54,15 @@ public class RedParallel extends Processor{
 
         gotoColumnLeft();
 
-        stopBotMotors();
+
         sleep(1000);
         bot.colorServo.setPosition(0);
         sleep(1000);
-
-        //releases the glyph and pushes the glyph into the cryptobox
+        align(180);
+        driveToDistance();
+        sleep(1000);
+        align(180);
         score();
+        stopBotMotors();
     }
 }

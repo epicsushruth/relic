@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 
 /**
- * Created by wolfie on 10/20/17.
+ * Created by sushruth on 10/20/17.
  */
 
 public abstract class Processor extends LinearOpMode {
@@ -359,25 +359,53 @@ public abstract class Processor extends LinearOpMode {
 
         stopBotMotors();
     }
+    public double getColumnDistance(int column)
+    {
+        double distance = 0;
 
+        if (column == 3)
+        {
+            distance = 68;
+        }
+        else if (column==2)
+        {
+            distance = 60.5;
+        }
+        else{
+            distance = 53;
+        }
+        return distance;
+    }
+    public void driveToDistance()
+    {
+        while(getInchesUltrasonicLeft()<getColumnDistance(getColumnLeft()))
+        {
+            bot.motorRF.setPower(0.2);
+            bot.motorRB.setPower(-0.2);
+            bot.motorLF.setPower(0.2);
+            bot.motorLB.setPower(-0.2);
+            telemetry.addData("Current distance ", getInchesUltrasonicLeft());
+        }
+        stopBotMotors();
+    }
     public void goPulses(int numOfCol) {
 
         int count = 0;
         bot.colorServo.setPosition(.5);
-        sleep(700);
+        sleep(1000);
         while (count < numOfCol) {
 
-            bot.motorLF.setPower(.15);
-            bot.motorRF.setPower(.15);
-            bot.motorRB.setPower(-.15);
-            bot.motorLB.setPower(-.15);
+            bot.motorLF.setPower(.3);
+            bot.motorRF.setPower(.3);
+            bot.motorRB.setPower(-.3);
+            bot.motorLB.setPower(-.3);
 
-            if (bot.colorSensor2.getDistance(DistanceUnit.CM)>5) {
+            if (bot.colorSensor2.getDistance(DistanceUnit.CM)<25) {
                 count++;
 
                 if (numOfCol >= count) {
                     runtime.reset();
-                    while (bot.colorSensor2.getDistance(DistanceUnit.CM)>5) {
+                    while (bot.colorSensor2.getDistance(DistanceUnit.CM)<25) {
                         bot.motorLF.setPower(.15);
                         bot.motorRF.setPower(.15);
                         bot.motorRB.setPower(-.15);
@@ -393,14 +421,24 @@ public abstract class Processor extends LinearOpMode {
         //sleep(700);
 
         //bot.colorServo.setPosition(0);\
+        stopBotMotors();
         sleep(1000);
 
-        goAngle(2.5,0);
+        goAngle(3,0);
         stopBotMotors();
     }
+    public double getInchesUltrasonicLeft()
+    {
+        return (bot.ultrasonicLeft.getVoltage());
+    }
+    /*public double getInchesUltrasonicRight()
+    {
+        return  (bot.ultrasonicRight.getVoltage()-.6050)/.0175;
+    }
+    */
     public void drivingRangeForward()
     {
-        while(bot.rangeSensor.getDistance(DistanceUnit.CM)>34.5)
+        while(bot.rangeSensor.getDistance(DistanceUnit.CM)>34.25)
         {
             bot.motorLF.setPower(-0.2);
             bot.motorRF.setPower((0.2));
@@ -413,7 +451,7 @@ public abstract class Processor extends LinearOpMode {
     }
     public void drivingRangeBack()
     {
-        while(bot.rangeSensor.getDistance(DistanceUnit.CM)<34.5)
+        while(bot.rangeSensor.getDistance(DistanceUnit.CM)<34.25)
         {
             bot.motorRB.setPower(-0.2);
             bot.motorLB.setPower(0.2);

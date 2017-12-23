@@ -86,7 +86,7 @@ public class TeleMap {
         motorRB.setDirection(DcMotor.Direction.FORWARD);
         motorRF.setDirection(DcMotor.Direction.FORWARD);
         motorLB.setDirection(DcMotor.Direction.FORWARD);
-        slideMotor.setDirection(DcMotor.Direction.FORWARD);
+        slideMotor.setDirection(DcMotor.Direction.REVERSE);
 
         motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);// could be a drain on power
 

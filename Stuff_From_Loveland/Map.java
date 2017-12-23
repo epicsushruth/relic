@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -35,6 +36,8 @@ public class Map {
     Servo glyphServo4;
     Servo jewelServo;
     Servo colorServo;
+    AnalogInput ultrasonicLeft = null;
+    //AnalogInput ultrasonicRight = null;
 
 
 
@@ -100,11 +103,9 @@ public class Map {
         colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
         colorSensor2 = hwMap.get(DistanceSensor.class, "colorSensor2");
         rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "rangeSensor");
-        //maxbotics = hwMap.get(AnalogInput.class, "ultrasonic");
+        ultrasonicLeft = hwMap.get( AnalogInput.class, "ultrasonicLeft");
+        //ultrasonicRight = hwMap.get(AnalogInput.class,"ultrasonicRight");
 
-
-        //touchSensor = hwMap.get(DigitalChannel.class, "touchSensor");
-        //touchSensor.setMode(DigitalChannel.Mode.INPUT);
 
 
         cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
