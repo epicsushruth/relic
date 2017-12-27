@@ -376,6 +376,7 @@ public abstract class Processor extends LinearOpMode {
         }
         return distance;
     }
+    /*
     public void driveToDistance()
     {
         while(getInchesUltrasonicLeft()<getColumnDistance(getColumnLeft()))
@@ -388,6 +389,7 @@ public abstract class Processor extends LinearOpMode {
         }
         stopBotMotors();
     }
+    */
     public void goPulses(int numOfCol) {
 
         int count = 0;
@@ -395,10 +397,10 @@ public abstract class Processor extends LinearOpMode {
         sleep(1000);
         while (count < numOfCol) {
 
-            bot.motorLF.setPower(.3);
-            bot.motorRF.setPower(.3);
-            bot.motorRB.setPower(-.3);
-            bot.motorLB.setPower(-.3);
+            bot.motorLF.setPower(.2);
+            bot.motorRF.setPower(.2);
+            bot.motorRB.setPower(-.2);
+            bot.motorLB.setPower(-.2);
 
             if (bot.colorSensor2.getDistance(DistanceUnit.CM)<25) {
                 count++;
@@ -427,18 +429,19 @@ public abstract class Processor extends LinearOpMode {
         goAngle(3,0);
         stopBotMotors();
     }
+    /*
     public double getInchesUltrasonicLeft()
     {
-        return (bot.ultrasonicLeft.getVoltage());
+        return (bot.ultrasonicLeft.getVoltage()/.00322265625);
     }
-    /*public double getInchesUltrasonicRight()
+    public double getInchesUltrasonicRight()
     {
         return  (bot.ultrasonicRight.getVoltage()-.6050)/.0175;
     }
-    */
+*/
     public void drivingRangeForward()
     {
-        while(bot.rangeSensor.getDistance(DistanceUnit.CM)>34.25)
+        while(bot.rangeSensor.getDistance(DistanceUnit.CM)>33.3)
         {
             bot.motorLF.setPower(-0.2);
             bot.motorRF.setPower((0.2));
@@ -451,7 +454,7 @@ public abstract class Processor extends LinearOpMode {
     }
     public void drivingRangeBack()
     {
-        while(bot.rangeSensor.getDistance(DistanceUnit.CM)<34.25)
+        while(bot.rangeSensor.getDistance(DistanceUnit.CM)<34)
         {
             bot.motorRB.setPower(-0.2);
             bot.motorLB.setPower(0.2);

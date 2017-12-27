@@ -19,8 +19,8 @@ public class RedParallel extends Processor{
         waitForStart();
         checkVu();
         checkCol();
-        bot.glyphServo3.setPosition(.35);
-        bot.glyphServo4.setPosition(.5);
+        bot.glyphServo3.setPosition(.08);
+        bot.glyphServo4.setPosition(1);
 
         sleep(1500);
 
@@ -33,7 +33,7 @@ public class RedParallel extends Processor{
         bot.slideMotor.setPower(0);
 
         bot.glyphServo1.setPosition(0.69);
-        bot.glyphServo2.setPosition(0.35);
+        bot.glyphServo2.setPosition(0.27);
         sleep(700);
 
         //knocks the correct jewel off according to our alliance color
@@ -50,6 +50,7 @@ public class RedParallel extends Processor{
         raiseColorServo();
         drivingRangeForward();
         drivingRangeBack();
+        drivingRangeForward();
 
 
         gotoColumnLeft();
@@ -59,9 +60,7 @@ public class RedParallel extends Processor{
         bot.colorServo.setPosition(0);
         sleep(1000);
         align(180);
-        driveToDistance();
-        sleep(1000);
-        align(180);
+        //driveToDistance();
         score();
         stopBotMotors();
     }

@@ -14,7 +14,7 @@ public class DistanceTest extends Processor{
         waitForStart();
         while(opModeIsActive())
         {
-            telemetry.addData("distance: ", getInchesUltrasonicLeft());
+            //telemetry.addData("distance: ", getInchesUltrasonicLeft());
             telemetry.update();
         }
     }
