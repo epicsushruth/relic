@@ -22,7 +22,7 @@ public class RedParallel extends Processor{
         bot.glyphServo3.setPosition(.08);
         bot.glyphServo4.setPosition(1);
 
-        sleep(1500);
+        sleep(500);
 
         runtime.reset();
 
@@ -40,25 +40,25 @@ public class RedParallel extends Processor{
         knockJewel(true);
 
         goAngle(20,0);
-        sleep(1000);
+        sleep(500);
         align(0);
-        sleep(1000);
+        sleep(500);
         turn(-180);
-        sleep(2000);
-        align(180);
         sleep(1000);
+        align(180);
+        sleep(500);
         raiseColorServo();
-        drivingRangeForward();
-        drivingRangeBack();
-        drivingRangeForward();
+        drivingRangeForwardRed();
+        drivingRangeBackRed();
+        drivingRangeForwardRed();
 
 
         gotoColumnLeft();
 
 
-        sleep(1000);
+        sleep(500);
         bot.colorServo.setPosition(0);
-        sleep(1000);
+        sleep(500);
         align(180);
         //driveToDistance();
         score();

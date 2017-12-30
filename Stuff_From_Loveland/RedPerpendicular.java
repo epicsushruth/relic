@@ -15,16 +15,13 @@ public class RedPerpendicular extends Processor{
     @Override
     public void runOpMode() throws InterruptedException {
         bot.init(hardwareMap);
-
         waitForStart();
         //bot.x = angularOffset();
         checkVu();
         checkCol();
-        bot.glyphServo1.setPosition(0.69);
-        bot.glyphServo2.setPosition(0.35);
-        bot.glyphServo3.setPosition(.35);
-        bot.glyphServo4.setPosition(.5);
-        sleep(1000);
+        bot.glyphServo3.setPosition(.08);
+        bot.glyphServo4.setPosition(1);
+        sleep(500);
 
         runtime.reset();
 
@@ -33,6 +30,9 @@ public class RedPerpendicular extends Processor{
             bot.slideMotor.setPower(-.8);
         }
         bot.slideMotor.setPower(0);
+        bot.glyphServo1.setPosition(0.69);
+        bot.glyphServo2.setPosition(0.27);
+        sleep(700);
 
         //knocks the correct jewel off according to our alliance color
         knockJewel(true);
@@ -54,40 +54,24 @@ public class RedPerpendicular extends Processor{
         align(0);
         sleep(500);
         turn(-90);
-        sleep(1000);
+        sleep(500);
         align(-90);
-
-        sleep(1000);
-        /*
-        while(bot.rangeSensor.getDistance(DistanceUnit.INCH)<getDistanceColumn(getColumn())||count!=getColumn()) {
-            telemetry.addData("dist",bot.rangeSensor.getDistance(DistanceUnit.INCH));
-            telemetry.addData("Count: ", count);
-            telemetry.update();
-            bot.motorRF.setPower(0.2);
-            bot.motorRB.setPower(-0.2);
-            bot.motorLB.setPower(-0.2);
-            bot.motorLF.setPower(0.2);
-            if (bot.touchSensor.getState()==false)
-            {
-                count++;
-            }
-        }
-        */
+        sleep(500);
         align(-90);
         raiseColorServo();
-        drivingRangeForward();
-        drivingRangeBack();
+        drivingRangeForwardRed();
+        drivingRangeBackRed();
+        drivingRangeForwardRed();
         gotoColumnLeft();
 
         stopBotMotors();
 
-        sleep(1000);
-        bot.colorServo.setPosition(0);
-        sleep(1000);
-        align(-91);
         sleep(500);
-
+        bot.colorServo.setPosition(0);
+        sleep(500);
+        align(-90);
         //releases the glyph and pushes the glyph into the cryptobox
         score();
+        stopBotMotors();
     }
 }
