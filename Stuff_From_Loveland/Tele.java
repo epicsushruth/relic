@@ -97,11 +97,15 @@ public class Tele extends OpMode{
 
         if(gamepad2.b)  //opens the right servo
         {
-            realeaseGlyphBot();
+            bot.glyphServo1.setPosition(.53);
+            bot.glyphServo2.setPosition(.42);
             realeaseGlyphTop();
         }
         if(gamepad2.x){
             resetGlpyhpos();
+        }
+        if(gamepad2.a){
+            realeaseGlyphTop();
         }
 
 
@@ -134,11 +138,11 @@ public class Tele extends OpMode{
     }
 
     public void fingersOpen(){
-        bot.relicFingers.setPosition(1);
+        bot.relicFingers.setPosition(0);
     }
 
     public void fingersClose(){
-        bot.relicFingers.setPosition(0);
+        bot.relicFingers.setPosition(1);
     }
 
     public void wristUp() {
@@ -154,24 +158,24 @@ public class Tele extends OpMode{
     }
     public void gripGlyphTop()
     {
-        bot.glyphServo3.setPosition(0.15);
-        bot.glyphServo4.setPosition(0.5);
+        bot.glyphServo3.setPosition(0.08);
+        bot.glyphServo4.setPosition(1);
     }
 
     public void openRightBot() {
-        bot.glyphServo1.setPosition(0.53);
+        bot.glyphServo1.setPosition(0.4);
     }
 
     public void openLeftBot() {
-        bot.glyphServo2.setPosition(0.42);
+        bot.glyphServo2.setPosition(0.55);
 
     }
     public void openRightTop() {
-        bot.glyphServo3.setPosition(.33);
+        bot.glyphServo3.setPosition(.35);
     }
 
     public void openLeftTop() {
-        bot.glyphServo4.setPosition(0.35);
+        bot.glyphServo4.setPosition(0.4);
 
     }
     public void closeJewel()
@@ -192,8 +196,8 @@ public class Tele extends OpMode{
     {
         bot.glyphServo1.setPosition(.28);
         bot.glyphServo2.setPosition(.67);
-        bot.glyphServo3.setPosition(.7);
-        bot.glyphServo4.setPosition(.18);
+        bot.glyphServo3.setPosition(.87);
+        bot.glyphServo4.setPosition(.12);
     }
 
     public void resetGlpyhpos(){

@@ -180,22 +180,7 @@ public abstract class Processor extends LinearOpMode {
         }
     }
 
-    public void grabGlyph() {
-        bot.glyphServo1.setPosition(0.);
-        bot.glyphServo2.setPosition(0.35);
-        bot.glyphServo3.setPosition(.35);
-        bot.glyphServo4.setPosition(.5);
-        sleep(1000);
 
-        runtime.reset();
-
-        //raises the Rev slides to pick the glyph off the ground to prevent dragging the glyph
-        while (runtime.milliseconds() < 300) {
-            bot.slideMotor.setPower(-.8);
-        }
-        bot.slideMotor.setPower(0);
-
-    }
 
     public void forward(double millisec) {
 
@@ -282,6 +267,14 @@ public abstract class Processor extends LinearOpMode {
         enterEnc();
 
         goPulses(getColumnLeft());
+
+        stopBotMotors();
+    }
+    public void gotoColumnRight()
+    {
+        enterEnc();
+
+        goPulses(getColumnRight());
 
         stopBotMotors();
     }
@@ -393,10 +386,10 @@ public abstract class Processor extends LinearOpMode {
         sleep(1000);
         while (count < numOfCol) {
 
-            bot.motorLF.setPower(.2);
-            bot.motorRF.setPower(.2);
-            bot.motorRB.setPower(-.2);
-            bot.motorLB.setPower(-.2);
+            bot.motorLF.setPower(-.2);
+            bot.motorRF.setPower(-.2);
+            bot.motorRB.setPower(.2);
+            bot.motorLB.setPower(.2);
 
             if (bot.colorSensor2.getDistance(DistanceUnit.CM) < 25) {
                 count++;
@@ -404,15 +397,16 @@ public abstract class Processor extends LinearOpMode {
                 if (numOfCol >= count) {
                     runtime.reset();
                     while (bot.colorSensor2.getDistance(DistanceUnit.CM) < 25) {
-                        bot.motorLF.setPower(.15);
-                        bot.motorRF.setPower(.15);
-                        bot.motorRB.setPower(-.15);
-                        bot.motorLB.setPower(-.15);
+                        bot.motorLF.setPower(-.15);
+                        bot.motorRF.setPower(-.15);
+                        bot.motorRB.setPower(.15);
+                        bot.motorLB.setPower(.15);
                     }
                 }
                 runtime.reset();
                 // clear the column so the same column is not counted three time
             }
+            telemetry.addData("distanceleft",getDistanceLeft());
             telemetry.addData("count", count);
             telemetry.update();
         }
@@ -467,35 +461,27 @@ public abstract class Processor extends LinearOpMode {
     {
         return  (bot.ultrasonicLeft.getVoltage()/3.3*1024);
     }
-    public double getDistanceRight()
-    {
-        return (bot.ultrasonicRight.getVoltage()/3.3*1024);
-    }
+
     public void getTelemetry()
     {
         telemetry.addData("UltrasonicDistanceLeft(in)", getDistanceLeft());
         telemetry.addData("Voltage Left ", getVoltagezLeft());
-        telemetry.addData("UltrasonicDistanceRight(in)", getDistanceRight());
-        telemetry.addData("Voltage Right ", getVoltagezRight());
         telemetry.update();
     }
     public double getVoltagezLeft()
     {
         return bot.ultrasonicLeft.getVoltage();
     }
-    public double getVoltagezRight()
-    {
-        return bot.ultrasonicRight.getVoltage();
-    }
 
-    public void drivingRangeForwardRed()
-    {
-        while(getDistanceRight()>13.11)
+
+    public void drivingRangeForwardRed() {
+        while(bot.rangeSensor.getDistance(DistanceUnit.INCH)>13.11)
         {
-            bot.motorLF.setPower(-0.2);
-            bot.motorRF.setPower((0.2));
-            bot.motorLB.setPower(-0.2);
-            bot.motorRB.setPower(0.2);
+            bot.motorLF.setPower(-0.1);
+            bot.motorRF.setPower((0.1));
+            bot.motorLB.setPower(-0.1);
+            bot.motorRB.setPower(0.1);
+            getTelemetry();
         }
 
             stopBotMotors();
@@ -505,34 +491,36 @@ public abstract class Processor extends LinearOpMode {
     {
         while(getDistanceLeft()>13.11)
         {
-            bot.motorLF.setPower(-0.2);
-            bot.motorRF.setPower((0.2));
-            bot.motorLB.setPower(-0.2);
-            bot.motorRB.setPower(0.2);
+            bot.motorLF.setPower(-0.1);
+            bot.motorRF.setPower((0.1));
+            bot.motorLB.setPower(-0.1);
+            bot.motorRB.setPower(0.1);
+            getTelemetry();
         }
 
         stopBotMotors();
     }
     public void drivingRangeBackBlue()
     {
-        while(getDistanceRight()<13.38)
+        while(getDistanceLeft()<13.38)
         {
-            bot.motorRB.setPower(-0.2);
-            bot.motorLB.setPower(0.2);
-            bot.motorRF.setPower(-0.2);
-            bot.motorLF.setPower(0.2);
-
+            bot.motorRB.setPower(-0.1);
+            bot.motorLB.setPower(0.1);
+            bot.motorRF.setPower(-0.1);
+            bot.motorLF.setPower(0.1);
+            getTelemetry();
         }
         stopBotMotors();
     }
     public void drivingRangeBackRed()
     {
-        while(getDistanceRight()<13.38)
+        while(bot.rangeSensor.getDistance(DistanceUnit.INCH)<13.38)
         {
-            bot.motorRB.setPower(-0.2);
-            bot.motorLB.setPower(0.2);
-            bot.motorRF.setPower(-0.2);
-            bot.motorLF.setPower(0.2);
+            bot.motorRB.setPower(-0.1);
+            bot.motorLB.setPower(0.1);
+            bot.motorRF.setPower(-0.1);
+            bot.motorLF.setPower(0.1);
+            getTelemetry();
 
         }
         stopBotMotors();
@@ -608,6 +596,8 @@ public abstract class Processor extends LinearOpMode {
                 }
                 // clear the column so the same column is not counted three time
             }
+            telemetry.addData("distanceleft",getDistanceLeft());
+            telemetry.addData("count", count);
             telemetry.addData("count", count);
             telemetry.update();
         }
@@ -653,7 +643,7 @@ public abstract class Processor extends LinearOpMode {
 
         runtime.reset();
         while (runtime.milliseconds() < 250) {
-            bot.slideMotor.setPower(.8);
+            bot.slideMotor.setPower(-.8);
         }
         bot.slideMotor.setPower(0);
 
@@ -662,7 +652,7 @@ public abstract class Processor extends LinearOpMode {
         //bot.glyphServo2.setPosition(0.6);
         //sleep(1000);
 
-        goAnglePower(3, 90, .3);
+        goAnglePower(3.3, 90, .3);
         sleep(500);
         //turn(30);
 
@@ -670,14 +660,30 @@ public abstract class Processor extends LinearOpMode {
         bot.glyphServo4.setPosition(.4);
         bot.glyphServo2.setPosition(0.6);
         bot.glyphServo3.setPosition(.6);
+        sleep(500);
+
+
+
+        goAnglePower(9, -90, .6);
         sleep(1000);
 
-        goAnglePower(2, 90, .3);
+    }
 
+    public void grabGlyph() {
+        bot.glyphServo3.setPosition(.08);
+        bot.glyphServo4.setPosition(1);
+        sleep(700);
 
-        goAnglePower(9, -90, .5);
-        sleep(1000);
+        runtime.reset();
 
+        //raises the Rev slides to pick the glyph off the ground to prevent dragging the glyph
+        while(runtime.milliseconds()<700) {
+            bot.slideMotor.setPower(.8);
+        }
+        bot.slideMotor.setPower(0);
+        bot.glyphServo1.setPosition(0.69);
+        bot.glyphServo2.setPosition(0.27);
+        sleep(700);
     }
 
 

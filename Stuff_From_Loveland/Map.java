@@ -134,7 +134,7 @@ public class Map {
 
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        jewelServo.setPosition(.2);
+        jewelServo.setPosition(0);
 
         colorServo.setPosition(0);
 
@@ -142,7 +142,7 @@ public class Map {
         glyphServo1.setPosition(0.4);
         glyphServo4.setPosition(.4);
         glyphServo2.setPosition(0.55);
-        glyphServo3.setPosition(.2);
+        glyphServo3.setPosition(.35);
         motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

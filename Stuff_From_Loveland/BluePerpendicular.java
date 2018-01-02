@@ -15,43 +15,18 @@ public class BluePerpendicular extends Processor{
     public void runOpMode() throws InterruptedException {
         bot.init(hardwareMap);
         waitForStart();
-        //bot.x = angularOffset();
         checkVu();
         checkCol();
-        bot.glyphServo3.setPosition(.08);
-        bot.glyphServo4.setPosition(1);
-        sleep(500);
 
-        runtime.reset();
-
-        //raises the Rev slides to pick the glyph off the ground to prevent dragging the glyph
-        while(runtime.milliseconds()<300) {
-            bot.slideMotor.setPower(-.8);
-        }
-        bot.slideMotor.setPower(0);
-        bot.glyphServo1.setPosition(0.69);
-        bot.glyphServo2.setPosition(0.27);
-        sleep(700);
+        grabGlyph();
 
         //knocks the correct jewel off according to our alliance color
-        knockJewel(true);
-/*
-        while(bot.rangeSensor.getDistance(DistanceUnit.INCH)<15) {
-            telemetry.addData("dist",bot.rangeSensor.getDistance(DistanceUnit.INCH));
-            telemetry.addData("Count: ", count);
-            telemetry.update();
-            bot.motorRF.setPower(-0.2);
-            bot.motorRB.setPower(0.2);
-            bot.motorLB.setPower(0.2);
-            bot.motorLF.setPower(-0.2);
-        }
-        bot.y = angularOffset();
-        double difference = bot.x-bot.y;
-        turn(difference);*/
+        knockJewel(false);
+
         goAngle(20,180);
-        sleep(500);
+
         align(0);
-        sleep(500);
+
         turn(90);
         sleep(500);
         align(90);
@@ -61,11 +36,11 @@ public class BluePerpendicular extends Processor{
         drivingRangeForwardBlue();
         drivingRangeBackBlue();
         drivingRangeForwardBlue();
-        gotoColumnLeft();
+        gotoColumnRight();
 
         stopBotMotors();
 
-        sleep(500);
+
         bot.colorServo.setPosition(0);
         sleep(500);
         align(90);

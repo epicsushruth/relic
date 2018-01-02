@@ -19,22 +19,8 @@ public class RedParallel extends Processor{
         waitForStart();
         checkVu();
         checkCol();
-        bot.glyphServo3.setPosition(.08);
-        bot.glyphServo4.setPosition(1);
 
-        sleep(500);
-
-        runtime.reset();
-
-        //raises the Rev slides to pick the glyph off the ground to prevent dragging the glyph
-        while(runtime.milliseconds()<300) {
-            bot.slideMotor.setPower(-.8);
-        }
-        bot.slideMotor.setPower(0);
-
-        bot.glyphServo1.setPosition(0.69);
-        bot.glyphServo2.setPosition(0.27);
-        sleep(700);
+        grabGlyph();
 
         //knocks the correct jewel off according to our alliance color
         knockJewel(true);
@@ -42,9 +28,7 @@ public class RedParallel extends Processor{
         goAngle(20,0);
         sleep(500);
         align(0);
-        sleep(500);
         turn(-180);
-        sleep(1000);
         align(180);
         sleep(500);
         raiseColorServo();
@@ -56,7 +40,7 @@ public class RedParallel extends Processor{
         gotoColumnLeft();
 
 
-        sleep(500);
+
         bot.colorServo.setPosition(0);
         sleep(500);
         align(180);
