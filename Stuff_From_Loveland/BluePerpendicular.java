@@ -47,7 +47,7 @@ public class BluePerpendicular extends Processor{
         sleep(500);
         align(90);
         //releases the glyph and pushes the glyph into the cryptobox
-        score(90);
+        score1(90);
         stopBotMotors();
     }
 }

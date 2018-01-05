@@ -267,7 +267,7 @@ public abstract class Processor extends LinearOpMode {
         enterEnc();
 
         goPulsesRed(getColumnLeft());
-        goAngle(0.5,0);
+        goAngle(2.55,0);
 
         stopBotMotors();
     }
@@ -708,6 +708,42 @@ public abstract class Processor extends LinearOpMode {
 
         goAnglePower(9, -90, .6);
         sleep(1000);
+
+    }
+    public void score1(int x) {
+        runtime.reset();
+        while (runtime.milliseconds() < 200) {
+            bot.slideMotor.setPower(-.8);
+        }
+        bot.slideMotor.setPower(0);
+
+        sleep(500);
+        align(x);
+        bot.glyphServo1.setPosition(0.4);
+        bot.glyphServo2.setPosition(0.6);
+        stopBotMotors();
+
+
+        goAnglePower(3.3, 90, .3);
+        sleep(500);
+        //turn(30);
+
+
+
+
+
+        goAnglePower(9, -90, .6);
+        sleep(1000);
+
+        bot.glyphServo4.setPosition(.45);
+        bot.glyphServo3.setPosition(.35);
+        runtime.reset();
+        while (runtime.milliseconds() < 400) {
+            bot.slideMotor.setPower(-.8);
+        }
+        bot.slideMotor.setPower(0);
+
+
 
     }
 
