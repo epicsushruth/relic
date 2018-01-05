@@ -204,7 +204,7 @@ public abstract class Processor extends LinearOpMode {
         telemetry.addData("red", bot.colorSensor.red());
         turn(toTurn);
         sleep(500);
-        bot.jewelServo.setPosition(.2);
+        bot.jewelServo.setPosition(0);
         sleep(500);
 
         turn(-toTurn);
@@ -416,7 +416,7 @@ public abstract class Processor extends LinearOpMode {
         stopBotMotors();
         sleep(1000);
 
-        goAngle(3, 0);
+        goAngle(0.5, 180);
         stopBotMotors();
     }
 
@@ -489,7 +489,7 @@ public abstract class Processor extends LinearOpMode {
     }
     public void drivingRangeForwardBlue()
     {
-        while(getDistanceLeft()>13.11)
+        while(getDistanceLeft()>14.5)
         {
             bot.motorLF.setPower(-0.1);
             bot.motorRF.setPower((0.1));
@@ -640,27 +640,25 @@ public abstract class Processor extends LinearOpMode {
 
 
     public void score() {
-
+        bot.glyphServo1.setPosition(0.4);
+        bot.glyphServo2.setPosition(0.6);
         runtime.reset();
-        while (runtime.milliseconds() < 250) {
+        while (runtime.milliseconds() < 500) {
             bot.slideMotor.setPower(-.8);
         }
         bot.slideMotor.setPower(0);
 
         stopBotMotors();
-        //bot.glyphServo1.setPosition(0.4);
-        //bot.glyphServo2.setPosition(0.6);
-        //sleep(1000);
+        bot.glyphServo4.setPosition(.4);
+
+        bot.glyphServo3.setPosition(.6);
+        sleep(500);
 
         goAnglePower(3.3, 90, .3);
         sleep(500);
         //turn(30);
 
-        bot.glyphServo1.setPosition(0.4);
-        bot.glyphServo4.setPosition(.4);
-        bot.glyphServo2.setPosition(0.6);
-        bot.glyphServo3.setPosition(.6);
-        sleep(500);
+
 
 
 
@@ -670,9 +668,12 @@ public abstract class Processor extends LinearOpMode {
     }
 
     public void grabGlyph() {
-        bot.glyphServo3.setPosition(.08);
+        bot.glyphServo3.setPosition(.12);
         bot.glyphServo4.setPosition(1);
-        sleep(700);
+
+
+        sleep(1200);
+
 
         runtime.reset();
 
@@ -682,7 +683,7 @@ public abstract class Processor extends LinearOpMode {
         }
         bot.slideMotor.setPower(0);
         bot.glyphServo1.setPosition(0.69);
-        bot.glyphServo2.setPosition(0.27);
+        bot.glyphServo2.setPosition(0.3);
         sleep(700);
     }
 

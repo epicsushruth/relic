@@ -17,6 +17,9 @@ public class testDistance extends Processor{
         {
             telemetry.addData("RangeSensor(CM): ",bot.rangeSensor.getDistance(DistanceUnit.CM));
             telemetry.addData("ProximitySensor(CM)", bot.colorSensor2.getDistance(DistanceUnit.CM));
+            telemetry.addData("MaxBotics(In)", getDistanceLeft());
+            telemetry.addData("Voltage ", bot.ultrasonicLeft.getVoltage());
+
             telemetry.update();
         }
     }

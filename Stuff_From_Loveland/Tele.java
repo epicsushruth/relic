@@ -65,7 +65,7 @@ public class Tele extends OpMode{
         }
         bot.slideMotor.setPower(slidePower);
 
-        if(gamepad1.a){
+        if(gamepad1.right_bumper){
             if(!toggle){
                 toggle = true;
             }
@@ -153,12 +153,12 @@ public class Tele extends OpMode{
         bot.relicWrist.setPosition(1);
     }
     public void gripGlyphBot() {
-        bot.glyphServo1.setPosition(0.69);
-        bot.glyphServo2.setPosition(0.27);
+        bot.glyphServo1.setPosition(0.65);
+        bot.glyphServo2.setPosition(0.3);
     }
     public void gripGlyphTop()
     {
-        bot.glyphServo3.setPosition(0.08);
+        bot.glyphServo3.setPosition(0.12);
         bot.glyphServo4.setPosition(1);
     }
 

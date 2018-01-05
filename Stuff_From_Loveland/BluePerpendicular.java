@@ -35,7 +35,9 @@ public class BluePerpendicular extends Processor{
         raiseColorServo();
         drivingRangeForwardBlue();
         drivingRangeBackBlue();
-        drivingRangeForwardBlue();
+
+
+        goAngle(2,0);
         gotoColumnRight();
 
         stopBotMotors();
