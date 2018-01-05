@@ -45,7 +45,7 @@ public class RedParallel extends Processor{
         sleep(500);
         align(180);
         //driveToDistance();
-        score();
+        score(180);
         stopBotMotors();
     }
 }

@@ -21,7 +21,7 @@ public class SCoes extends Processor{
         bot.init(hardwareMap);
         waitForStart();
 
-        score();
+
 
 
 

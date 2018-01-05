@@ -61,7 +61,7 @@ public class FullAutoBlueParallel extends Processor{
         sleep(1000);
 
         //releases the glyph and pushes the glyph into the cryptobox
-        score();
+
     }
 }
 

@@ -61,7 +61,7 @@ public class FullAutoRedParallel extends Processor{
         sleep(500);
 
         //releases the glyph and pushes the glyph into the cryptobox
-        score();
+
 
 
     }
