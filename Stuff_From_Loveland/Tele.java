@@ -97,7 +97,7 @@ public class Tele extends OpMode{
 
         if(gamepad2.b)  //opens the right servo
         {
-            bot.glyphServo1.setPosition(.53);
+            bot.glyphServo1.setPosition(.57);
             bot.glyphServo2.setPosition(.42);
             realeaseGlyphTop();
         }
@@ -153,17 +153,17 @@ public class Tele extends OpMode{
         bot.relicWrist.setPosition(1);
     }
     public void gripGlyphBot() {
-        bot.glyphServo1.setPosition(0.65);
-        bot.glyphServo2.setPosition(0.3);
+        bot.glyphServo1.setPosition(0.68);
+        bot.glyphServo2.setPosition(0.31);
     }
     public void gripGlyphTop()
     {
-        bot.glyphServo3.setPosition(0.12);
-        bot.glyphServo4.setPosition(1);
+        bot.glyphServo3.setPosition(0.17);
+        bot.glyphServo4.setPosition(.62);
     }
 
     public void openRightBot() {
-        bot.glyphServo1.setPosition(0.4);
+        bot.glyphServo1.setPosition(0.44);
     }
 
     public void openLeftBot() {
@@ -171,11 +171,11 @@ public class Tele extends OpMode{
 
     }
     public void openRightTop() {
-        bot.glyphServo3.setPosition(.35);
+        bot.glyphServo3.setPosition(.32);
     }
 
     public void openLeftTop() {
-        bot.glyphServo4.setPosition(0.4);
+        bot.glyphServo4.setPosition(0.46);
 
     }
     public void closeJewel()

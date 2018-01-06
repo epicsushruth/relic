@@ -151,6 +151,8 @@ public class Map {
         motorRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
+
+
     }
 
     public void stubbedInit() {
