@@ -300,7 +300,7 @@ public abstract class Processor extends LinearOpMode {
         enterEnc();
 
         goAngleColumns(20,178,0.2,getColumnLeft());
-        goAngle(2.6,0);
+        goAngle(2.55,0);
 
         stopBotMotors();
     }
@@ -309,6 +309,7 @@ public abstract class Processor extends LinearOpMode {
         enterEnc();
 
         goAngleColumns(20,0,0.2,getColumnRight());
+        goAngle(0.25,180);
 
         stopBotMotors();
     }
@@ -622,7 +623,7 @@ public abstract class Processor extends LinearOpMode {
     }
     public void drivingRangeForwardBlue()
     {
-        while(getDistanceLeft()>14.5)
+        while(getDistanceLeft()>14.3)
         {
             bot.motorLF.setPower(-0.1);
             bot.motorRF.setPower((0.1));
@@ -635,7 +636,7 @@ public abstract class Processor extends LinearOpMode {
     }
     public void drivingRangeBackBlue()
     {
-        while(getDistanceLeft()<13.38)
+        while(getDistanceLeft()<14.3)
         {
             bot.motorRB.setPower(-0.1);
             bot.motorLB.setPower(0.1);

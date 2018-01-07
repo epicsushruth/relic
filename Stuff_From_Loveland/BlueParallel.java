@@ -37,6 +37,10 @@ public class BlueParallel extends Processor{
         raiseColorServo();
         drivingRangeForwardBlue();
         drivingRangeBackBlue();
+        drivingRangeForwardBlue();
+        align(180);
+        align(180);
+        align(180);
 
 
         gotoColumnRight();
@@ -44,11 +48,11 @@ public class BlueParallel extends Processor{
         stopBotMotors();
 
         bot.colorServo.setPosition(0);
-        goAngle(0.25,180);
+
 
         sleep(500);
         align(180);
         //driveToDistance();
-        score1(180);
+        score();
         stopBotMotors();    }
 }

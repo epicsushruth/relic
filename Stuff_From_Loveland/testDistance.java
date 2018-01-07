@@ -26,8 +26,22 @@ public class testDistance extends Processor{
 
 
     public void lineUP(double distance){
+        while(Math.abs(getDistanceLeft()-distance) >= 1 && Math.abs(bot.rangeSensor.getDistance(DistanceUnit.INCH)-distance) >= 1) {
+            if(Math.abs(getDistanceLeft()-distance)>Math.abs(bot.rangeSensor.getDistance(DistanceUnit.INCH)-distance)){
+                bot.motorRF.setPower(.1);
+                bot.motorLF.setPower(.1);
+                bot.motorLB.setPower(.1);
+                bot.motorRB.setPower(.1);
+            }
+            if(Math.abs(getDistanceLeft()-distance)<Math.abs(bot.rangeSensor.getDistance(DistanceUnit.INCH)-distance)){
+                bot.motorRF.setPower(-.1);
+                bot.motorLF.setPower(-.1);
+                bot.motorLB.setPower(-.1);
+                bot.motorRB.setPower(-.1);
+            }
+        }
 
-        
 
     }
+
 }
