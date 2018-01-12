@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.control;
 
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +50,7 @@ public class Omni {
             double x = Math.cos(thetaD-Math.PI/4);
             double y = Math.sin(thetaD-Math.PI/4);
             double z = vTheta;
-            Wheels motion2 = new Wheels ((vD*(y+x-z)),(-vD*(y-x+z)),(vD*(y-x-z)),(vD*(y+x+z)));
+            Wheels motion2 = new Wheels ((vD*(y-x-z)),(-vD*(y-x-z)),(vD*(-y+x-z)),(vD*(y+x-z)));
             return motion2;
         }
 

@@ -48,9 +48,7 @@ public class REdParallelTest extends Processor{
         align(180);
         sleep(500);
         raiseColorServo();
-        drivingRangeForwardRed();
-        drivingRangeBackRed();
-        drivingRangeForwardRed();
+
 
 
         gotoColumnLeft();
@@ -62,7 +60,6 @@ public class REdParallelTest extends Processor{
         sleep(500);
         align(180);
         //driveToDistance();
-        score();
         stopBotMotors();
     }
 }

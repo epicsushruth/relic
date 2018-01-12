@@ -11,9 +11,7 @@ public class driveTest extends Processor {
     public void runOpMode() throws InterruptedException {
         bot.init(hardwareMap);
         waitForStart();
-        drivingRangeForwardRed();
-        drivingRangeBackRed();
-        drivingRangeForwardRed();
+
         stopBotMotors();
     }
 }

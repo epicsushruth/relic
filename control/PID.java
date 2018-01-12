@@ -5,6 +5,21 @@ package org.firstinspires.ftc.teamcode.control;
  * https://en.wikipedia.org/wiki/PID_controller#Ideal_versus_standard_PID_form
  */
 public class Pid {
+    // Proportional factor to scale error to output.
+    private double kp;
+    // The number of seconds to eliminate all past errors.
+    private double ti;
+    // The number of seconds to predict the error in the future.
+    private double td;
+    // The min of the running integral.
+    private double integralMin;
+    // The max of the running integral.
+    private double integralMax;
+
+    // The last error value.
+    private double previousError;
+    // The discrete running integral (bounded by integralMax).
+    private double runningIntegral;
     /**
      * Creates a PID Controller.
      * @param kp Proportional factor to scale error to output.
@@ -24,7 +39,7 @@ public class Pid {
         this.previousError = 0;
         this.runningIntegral = 0;
     }
-
+//VEX IS KING OF ROBOTICS!!!!!
     /**
      * Performs a PID update and returns the output control.
      * @param desiredValue The desired state value (e.g. speed).
@@ -54,19 +69,5 @@ public class Pid {
         return Math.min(max, Math.max(min, value));
     }
 
-    // Proportional factor to scale error to output.
-    private double kp;
-    // The number of seconds to eliminate all past errors.
-    private double ti;
-    // The number of seconds to predict the error in the future.
-    private double td;
-    // The min of the running integral.
-    private double integralMin;
-    // The max of the running integral.
-    private double integralMax;
 
-    // The last error value.
-    private double previousError;
-    // The discrete running integral (bounded by integralMax).
-    private double runningIntegral;
 }

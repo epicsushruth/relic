@@ -59,9 +59,7 @@ public class RedPerpendicularTest extends Processor{
         sleep(500);
         align(-90);
         raiseColorServo();
-        drivingRangeForwardRed();
-        drivingRangeBackRed();
-        drivingRangeForwardRed();
+
         gotoColumnLeft();
 
         stopBotMotors();
@@ -72,7 +70,7 @@ public class RedPerpendicularTest extends Processor{
         sleep(500);
         align(-90);
         //releases the glyph and pushes the glyph into the cryptobox
-        score();
+
         stopBotMotors();
     }
 }

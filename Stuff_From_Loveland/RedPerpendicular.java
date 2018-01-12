@@ -18,7 +18,6 @@ public class RedPerpendicular extends Processor {
         bot.init(hardwareMap);
         waitForStart();
         //bot.x = angularOffset();
-        checkVu();
         checkCol();
         grabGlyph();
 
@@ -26,14 +25,15 @@ public class RedPerpendicular extends Processor {
         knockJewel(true);
 
         goAngle(20, 0);
-        sleep(500);
         align(0);
         turn(-90);
         align(-90);
+        goAnglePower(1.3,180,.3);
         raiseColorServo();
-        drivingRangeForwardRed();
-        drivingRangeBackRed();
-        drivingRangeForwardRed();
+        adjust(.037);
+        adjust(.037);
+        adjust(.037);
+
         align(-90);
         gotoColumnLeft();
 
@@ -45,7 +45,7 @@ public class RedPerpendicular extends Processor {
         sleep(500);
         align(-90);
         //releases the glyph and pushes the glyph into the cryptobox
-        score();
+        score1(-90);
         stopBotMotors();
     }
 }

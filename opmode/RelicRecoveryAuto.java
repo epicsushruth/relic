@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.base.StateMachine;
 import org.firstinspires.ftc.teamcode.base.StateMachine.State;
 import org.firstinspires.ftc.teamcode.control.Omni;
 import org.firstinspires.ftc.teamcode.control.Pid;
-import org.firstinspires.ftc.teamcode.vision.SimpleVuforia;
 
 
 public class RelicRecoveryAuto extends RobotHardware {
@@ -67,11 +66,12 @@ public class RelicRecoveryAuto extends RobotHardware {
         telemetry.addData("Robot Color", robotColor.name());
         telemetry.addData("Robot Start Position", robotStartPos.name());
 
-        StateMachine.State driveToCryptobox = newDriveToCryptobox(null);
-        StateMachine.State hitJewel = newHitJewel(driveToCryptobox);
-        StateMachine.State detectVuforia = new DetectVuforia(hitJewel);
+        //StateMachine.State driveToCryptobox = newDriveToCryptobox(null);
+        //StateMachine.State hitJewel = newHitJewel(driveToCryptobox);
+        //StateMachine.State detectVuforia = new DetectVuforia(hitJewel);
+        StateMachine.State navigateViaDistance = new NavigateViaDistance(null);
 
-        machine = new StateMachine(detectVuforia);
+        machine = new StateMachine(navigateViaDistance);
 
         telemetry.update();
     }
@@ -107,7 +107,7 @@ public class RelicRecoveryAuto extends RobotHardware {
         private StateMachine.State next;
         private double startTime;
     }
-
+/*
     // Detects the Vuforia Mark.
     private class DetectVuforia implements StateMachine.State {
         public DetectVuforia(StateMachine.State next) {
@@ -305,7 +305,7 @@ public class RelicRecoveryAuto extends RobotHardware {
                 driveOffSec, turnToFace);
         return driveOff;
     }
-
+*/
     // Drives towards a position on the map using distance sensor readings.
     // Assumes the robot is in the correct orientation and square with the field.
     private class NavigateViaDistance implements StateMachine.State {

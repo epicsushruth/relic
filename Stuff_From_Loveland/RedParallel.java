@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Created by Sushr on 12/15/2017.
  */
 @Autonomous(name = "redParallel", group = "fjfrjkdk")
-public class RedParallel extends Processor{
+public class RedParallel extends Processor {
 
     int count = 0;
     boolean touch = false;
@@ -17,7 +17,6 @@ public class RedParallel extends Processor{
         bot.init(hardwareMap);
 
         waitForStart();
-        checkVu();
         checkCol();
 
         grabGlyph();
@@ -25,23 +24,19 @@ public class RedParallel extends Processor{
         //knocks the correct jewel off according to our alliance color
         knockJewel(true);
 
-        goAngle(20,0);
-        sleep(500);
+        goAngle(22.5,20);
         align(0);
         turn(-180);
         align(180);
-        sleep(500);
         raiseColorServo();
         align(180);
-        //adjust(33.75);
-        //adjust(33.75);
-        //adjust(33.75);
-        drivingRangeForwardRed();
-        drivingRangeBackRed();
-        drivingRangeForwardRed();
+
+        adjust(.036);
+        adjust(.036);
+        adjust(.036);
+
         align(180);
-        align(180);
-        align(180);
+
         sleep(500);
         gotoColumnLeft();
 
@@ -52,7 +47,7 @@ public class RedParallel extends Processor{
         sleep(500);
         align(180);
         //driveToDistance();
-        score();
+        score1(180);
         stopBotMotors();
     }
 }
