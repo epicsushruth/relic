@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.teamcode.base.Color;
 import org.firstinspires.ftc.teamcode.base.StateMachine;
@@ -12,7 +10,6 @@ import org.firstinspires.ftc.teamcode.control.Pid;
 
 public class RelicRecoveryAuto extends RobotHardware {
 
-    @Autonomous(name="Red.Parallel dont use", group="pmtischler")
     public static class RelicRecoveryAutoRedCenter extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.RED;
@@ -22,7 +19,6 @@ public class RelicRecoveryAuto extends RobotHardware {
         }
     }
 
-    @Autonomous(name="Red.Perpendicular Dont use", group="pmtischler")
     public static class RelicRecoveryAutoRedCorner extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.RED;
@@ -32,7 +28,6 @@ public class RelicRecoveryAuto extends RobotHardware {
         }
     }
 
-    @Autonomous(name="Blue.Parallel dont use", group="pmtischler")
     public static class RelicRecoveryAutoBlueCenter extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.BLUE;
@@ -42,7 +37,6 @@ public class RelicRecoveryAuto extends RobotHardware {
         }
     }
 
-    @Autonomous(name="Blue.Perpendicular dont use", group="pmtischler")
     public static class RelicRecoveryAutoBlueCorner extends RelicRecoveryAuto {
         @Override public void init() {
             robotColor = Color.Ftc.BLUE;

@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * Created by Sushr on 12/15/2017.
  */
-@Autonomous(name = "redParallelTest", group = "fjfrjkdk")
 public class REdParallelTest extends Processor{
 
     int count = 0;

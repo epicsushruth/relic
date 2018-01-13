@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 /**
  * Created by wolfie on 11/17/17.
  */
-@Autonomous(name = " raawrrrr  " , group ="Concept")
 
 public class TURN extends Processor{
     /**

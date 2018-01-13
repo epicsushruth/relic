@@ -267,7 +267,7 @@ public abstract class Processor extends LinearOpMode {
         enterEnc();
 
         goAngleColumns(18,180,0.25,getColumnLeft());
-        goAngle(2.72,0);
+        goAngle(2.,0);
 
         stopBotMotors();
     }
@@ -531,7 +531,7 @@ public abstract class Processor extends LinearOpMode {
         sleep(500);
 
         runtime.reset();
-        while (runtime.milliseconds() <600) {
+        while (runtime.milliseconds() <450) {
             bot.slideMotor.setPower(-.8);
         }
         bot.slideMotor.setPower(0);

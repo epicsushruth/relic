@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 /**
  * Created by WHHS Robotics on 9/23/17.
  */
-@Autonomous(name = "FullAutoRedPerp" , group ="Concept")
 
 public class FullAutoRedPerp extends Processor{
 

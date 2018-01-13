@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 /**
  * Created by wolfie on 11/21/17.
  */
-@Autonomous(name = "GoColumn" , group ="Concept")
 
 public class GoPulses extends Processor{
     /**

@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.Stuff_From_Loveland;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Stuff_From_Loveland.Detectors.CryptoboxDetector;
 
 
-@TeleOp(name="DogeCV Red Cryptobox Detector", group="DogeCV")
 
 public class CryptoboxOpMode extends OpMode
 {
