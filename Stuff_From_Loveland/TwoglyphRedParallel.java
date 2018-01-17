@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 /**
  * Created by Sushr on 12/15/2017.
  */
-@Autonomous(name = "BlueParallel", group = "fjfrjkdk")
-public class BlueParallel extends Processor {
+@Autonomous(name = "2glyphRedParallel", group = "fjfrjkdk")
+public class TwoglyphRedParallel extends Processor {
 
     int count = 0;
     boolean touch = false;
@@ -21,26 +21,36 @@ public class BlueParallel extends Processor {
         grabGlyph();
         align(0);
 
-        //knocks the correct jewel off according to our alliance colo
+
 
         //knocks the correct jewel off according to our alliance color
-        knockJewel(false);
+        knockJewel(true);
 
-        goAnglePower(24,160,.4);
+        goAngle(30,60);
+        openLeftBot();
+        openRightBot();
+        goAngle(2,90);
+        gripGlyphBot();
         align(0);
-        turn(180);
+        goAngle(5,180);
+        goAngle(20,270);
+        align(0);
+        turn(-180);
         align(180);
         raiseColorServo();
-        adjust(.048);
-        sleep(200);
-        adjust(.048);
-        adjust(.048);
         align(180);
 
+        adjust(.036);
+        adjust(.036);
+        adjust(.036);
+        goAngle(2,0);
 
-        gotoColumnRight();
+        align(180);
 
-        stopBotMotors();
+        sleep(500);
+        gotoColumnLeft();
+
+
 
         bot.colorServo.setPosition(0);
 

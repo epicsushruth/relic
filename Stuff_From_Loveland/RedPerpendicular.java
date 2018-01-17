@@ -20,6 +20,7 @@ public class RedPerpendicular extends Processor {
         //bot.x = angularOffset();
         checkCol();
         grabGlyph();
+        align(0);
 
         //knocks the correct jewel off according to our alliance color
         knockJewel(true);
@@ -33,8 +34,10 @@ public class RedPerpendicular extends Processor {
         adjust(.037);
         adjust(.037);
         adjust(.037);
+        goAngle(1.5,0);
 
         align(-90);
+
         gotoColumnLeft();
 
         stopBotMotors();

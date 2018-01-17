@@ -266,8 +266,8 @@ public abstract class Processor extends LinearOpMode {
         // the direction approaching the cryptobox changes depending on the side
         enterEnc();
 
-        goAngleColumns(18,180,0.25,getColumnLeft());
-        goAngle(2.,0);
+        goAngleColumns(17.5,180,0.25,getColumnLeft());
+        goAngle(2,0);
 
         stopBotMotors();
     }
@@ -275,8 +275,8 @@ public abstract class Processor extends LinearOpMode {
     {
         enterEnc();
 
-        goAngleColumns(18,0,0.25,getColumnRight());
-        goAngle(1,0);
+        goAngleColumns(17.5,0,0.25,getColumnRight());
+        goAngle(2.1,0);
 
         stopBotMotors();
     }
@@ -547,9 +547,10 @@ public abstract class Processor extends LinearOpMode {
         sleep(500);
         //turn(30);
 
-        goAnglePower(9, -90, .6);
+        goAnglePower(7.5, -90, .6);
     }
-
+//Error:Could not read path 'C:\Users\Sushr\Desktop\Robotics\openCVLibrary320\build\generated\source\r\debug\org\opencv'.
+//> C:\Users\Sushr\Desktop\Robotics\openCVLibrary320\build\generated\source\r\debug\org\opencv
     public void grabGlyph() {
         bot.glyphServo3.setPosition(.12);
         bot.glyphServo4.setPosition(1);
@@ -565,6 +566,18 @@ public abstract class Processor extends LinearOpMode {
         sleep(700);
     }
 
+    public void openRightBot() {
+        bot.glyphServo1.setPosition(0.44);
+    }
+
+    public void openLeftBot() {
+        bot.glyphServo2.setPosition(0.55);
+
+    }
+    public void gripGlyphBot() {
+        bot.glyphServo1.setPosition(0.68);
+        bot.glyphServo2.setPosition(0.31);
+    }
 
     public void goAngle(double dist, double angle) {
         resetEnc();
