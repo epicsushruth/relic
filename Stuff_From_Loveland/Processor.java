@@ -561,8 +561,8 @@ public abstract class Processor extends LinearOpMode {
             bot.slideMotor.setPower(.8);
         }
         bot.slideMotor.setPower(0);
-        bot.glyphServo1.setPosition(0.69);
-        bot.glyphServo2.setPosition(0.3);
+        //bot.glyphServo1.setPosition(0.69);
+        //bot.glyphServo2.setPosition(0.3);
         sleep(700);
     }
 

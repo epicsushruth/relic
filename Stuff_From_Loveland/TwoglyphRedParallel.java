@@ -26,14 +26,8 @@ public class TwoglyphRedParallel extends Processor {
         //knocks the correct jewel off according to our alliance color
         knockJewel(true);
 
-        goAngle(30,60);
-        openLeftBot();
-        openRightBot();
-        goAngle(2,90);
-        gripGlyphBot();
-        align(0);
-        goAngle(5,180);
-        goAngle(20,270);
+        goAngle(22.5,20);
+
         align(0);
         turn(-180);
         align(180);
@@ -50,8 +44,6 @@ public class TwoglyphRedParallel extends Processor {
         sleep(500);
         gotoColumnLeft();
 
-
-
         bot.colorServo.setPosition(0);
 
         sleep(500);
@@ -59,5 +51,15 @@ public class TwoglyphRedParallel extends Processor {
         //driveToDistance();
         score1(180);
         stopBotMotors();
+        turn(180);
+        goAngle(31.8,90);
+        openLeftBot();
+        openRightBot();
+        goAngle(2,90);
+        gripGlyphBot();
+        goAngle(10,270);
+        align(0);
+        turn(180);
+        goAngle(35,90);
     }
 }
